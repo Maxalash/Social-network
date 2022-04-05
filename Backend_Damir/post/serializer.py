@@ -26,3 +26,24 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = '__all__'
+
+class PostMakeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ['title','text']
+
+
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PostImage
+        fields = ['image','owner']
+
+class ImageCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PostImage
+        fields = ['image','owner','post']
+
+class CreateCommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ['text','post']
