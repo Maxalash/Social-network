@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import axios from "axios"
-import { Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Card, Alert } from 'react-bootstrap';
 import Cookies from 'universal-cookie';
 const cookie = new Cookies()
@@ -13,6 +13,13 @@ const cookie = new Cookies()
 }
 function cookieGet(){
     return cookie.get('token');
+}
+
+async function logggin(){
+   
+  if(this.state.loggedIN == 0){
+      <Link to="/" />
+  }
 }
 
 const Alerting = ()=>{
@@ -88,9 +95,6 @@ class Login extends React.Component{
   };
 
   render(){
-    if(this.state.loggedIN == 0){
-        <Navigate to="/" />
-    }
     return (
         <div> 
         {this.state.loggedIN==undefined ? "":<Alerting />}
@@ -143,7 +147,7 @@ class Login extends React.Component{
                   </button>
                 </form>
         </Card.Body>
-        <Card.Footer className="text" style={{borderBottomLeftRadius:50+"px", borderBottomRightRadius:50+"px"}}>Register</Card.Footer>
+        <Card.Footer className="text" style={{borderBottomLeftRadius:50+"px", borderBottomRightRadius:50+"px"}}><Link to="/register">Register</Link></Card.Footer>
       </Card>
       </div> 
       );

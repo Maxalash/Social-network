@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import axios from "axios"
-import { Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Card, Alert } from 'react-bootstrap';
 import Cookies from 'universal-cookie';
 const cookie = new Cookies()
@@ -101,7 +101,7 @@ class Register extends React.Component{
 
   render(){
     if(this.state.loggedIN == 0){
-        <Navigate to="/" />
+        <Link to="/" />
     }
     return (
         <div>
@@ -155,7 +155,7 @@ class Register extends React.Component{
                   </button>
                 </form>
         </Card.Body>
-        <Card.Footer className="text" style={{borderBottomLeftRadius:50+"px", borderBottomRightRadius:50+"px"}}>Login</Card.Footer>
+        <Card.Footer className="text" style={{borderBottomLeftRadius:50+"px", borderBottomRightRadius:50+"px"}}><Link to="/login">Login</Link></Card.Footer>
       </Card>
       </div>
       );

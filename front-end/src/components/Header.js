@@ -7,10 +7,10 @@ import {
     Routes,
     Router,
     Route,
+    Link, 
     NavLink as NavLink2
 } from "react-router-dom";
-import Login from "../Login"
-import Register from "../Register"
+
 import Cookies from 'universal-cookie';
 const cookie = new Cookies()
 
@@ -64,8 +64,10 @@ const Navdrop = ()=>{
 const Navln = ()=>{
   return(
     <Nav className="justify-content-end" >
-      <Nav.Link to="/login">Log in</Nav.Link>
-      <Nav.Link to="/register">Register</Nav.Link>
+      <Nav.Link><Link to="/login">Log in</Link></Nav.Link>
+      <Nav.Link><Link to="/register">Register</Link></Nav.Link>
+      {/* <Nav.Link to="/login">Log in</Nav.Link>
+      <Nav.Link to="/register">Register</Nav.Link> */}
     </Nav>
   )
 }
@@ -82,6 +84,8 @@ const Header = () =>{
                         Home
                       </Nav.Link>
                         <Nav.Link href="#">About us</Nav.Link>
+                        {/* <Link to="/invoices">Invoices</Link> |{" "}
+                        <Link to="/expenses">Expenses</Link> */}
                         {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                           <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                           <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
