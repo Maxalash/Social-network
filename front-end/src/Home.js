@@ -21,7 +21,7 @@ const cookie = new Cookies()
 
 function cookieGet(){
     return cookie.get('token');
-  }
+}
 
 
 function checkSession(){
@@ -35,7 +35,7 @@ function checkSession(){
     };
     fetch('http://127.0.0.1:8000/post/posts/', requestOptions)
     .then(res => {
-        console.log(res.status)
+        // console.log(res.status)
         if(res.ok) {
             return res.status;
         }else{
@@ -44,75 +44,94 @@ function checkSession(){
         throw new Error('Network response was not ok.');
       })
       .catch(function(error) {
-        console.log('There has been a problem with your fetch operation: ', 
-        error.message);
+        // console.log('There has been a problem with your fetch operation: ', 
+        // error.message);
        });
+}
+
+const listPost = (list)=>{  
+    const listItems = list.map((ps) =>  
+        <Post 
+            author={ps['author']}
+            embedded_likes_count= {ps['embedded_likes_count']}
+            id= {ps['id']}
+            pub_date= {ps['pub_date']}
+            text= {ps['text']}
+            title= {ps['title']}
+        />  
+    );  
+    return listItems
 }
 
 class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            status: checkSession()
+            posts:[]
+            // status: checkSession()
         };
-    
-        // this.handleunam = this.handleunam.bind(this);
-        // this.handlepass = this.handlepass.bind(this);
-        // this.handlesubmit = this.handlesubmit.bind(this);
-        // this.handlesubmit2 = this.handlesubmit2.bind(this);
+        this.getPosts();
       }
-    
+   
+    getPosts(){
+        const requestOptions = {
+            method:'GET',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization':'Token b28d98c8c36b06500d73f255db11d07722df2c8d'
+            }
+        };
+        
+        fetch('http://127.0.0.1:8000/post/all_posts/',requestOptions)
+        .then(res => {
+            return res.json();
+          })
+          .then(data => {
+              this.setState({posts: data })
+              console.log(data)
+          });
+    }
 
-    // handlepass(event){
-    //     this.setState({passwrd: event.target.value});
+    // renderPost(ps){
+    //     console.log(ps);
+    //     return (<Post 
+    //         author={ps['author']}
+    //         embedded_likes_count= {ps['embedded_likes_count']}
+    //         id= {ps['id']}
+    //         pub_date= {ps['pub_date']}
+    //         text= {ps['text']}
+    //         title= {ps['title']}
+    //     />);
     // }
-    // handleunam(event){
-    //     this.setState({username: event.target.value})
-    // }
 
-    // handlesubmit(event){
-    //     alert('A name was submitted: ' + this.state.username + this.state.passwrd);
-    //     this.request()
-    //     event.preventDefault();
-    // }
-
-
-
-    // request(){
-    //     const requestOptions = {
-    //         method:'POST',
-    //         headers: { 
-    //             'Content-Type': 'application/json'
-    //         },   
-    //         body: JSON.stringify({
-    //             username: this.state.username,
-    //             password: this.state.passwrd
-    //         })
-    //     };
-    //     fetch('http://127.0.0.1:8000/post/register/', requestOptions)
-    //     .then(res => {
-    //         return res.json();
-    //       })
-    //       .then(data => {
-    //         console.log(data)
-    //       })
+    // listPosts(){
+    //     return this.state.props.map((ps)=>(<Post 
+    //         author={ps['author']}
+    //         embedded_likes_count= {ps['embedded_likes_count']}
+    //         id= {ps['id']}
+    //         pub_date= {ps['pub_date']}
+    //         text= {ps['text']}
+    //         title= {ps['title']}
+    //     />))
     // }
 
     render(){
         return (
             <div className = "body">
-
                 <Header />
-                {/* <BrowserRouter>
-                  <div>
-                    <Routes>
-                      <Route path="/login" element= {<Navigate to="/login" />}></Route>
-                      <Route path="/register" element= {Register}></Route>
-                    </Routes>
-                  </div>
-                </BrowserRouter> */}
                 <div className='postscontain'>
-                    <Post />
+                {this.state.posts.map((ps, key) => {
+                    return (
+                        <Post 
+                            author={ps.author}
+                            embedded_likes_count= {ps.embedded_likes_count}
+                            id= {ps.id}
+                            pub_date= {ps.pub_date}
+                            text= {ps.text}
+                            title= {ps.title}
+                        />  
+                    );
+                })}
                 </div>
                 <Footer />
                 

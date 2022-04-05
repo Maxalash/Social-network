@@ -16,16 +16,10 @@ function cookieGet(){
 }
 
 
-const Alerting = ()=>{
-    return(
-        <Alert variant="success" style = {{position:"fixed",left:50+"%", margin: 80+"px  auto auto -130px", zIndex:20 }}>
-          <Alert.Heading>Hey, nice to see you</Alert.Heading>
-          <p>
-            You are logged in successfully:)
-          </p>
-        </Alert>
-    )
-}
+// const Alerting = ()=>{
+//   this.props.history.push('/')
+// }
+
 class Login extends React.Component{
     constructor(props) {
         super(props);
@@ -83,6 +77,7 @@ class Login extends React.Component{
       .then(data => {
         var tooken = data
         createCookies(data)
+        this.props.history.push('/')
         console.log(tooken)
         this.setState({loggedIN: cookieGet()})
       })
@@ -91,7 +86,7 @@ class Login extends React.Component{
   render(){
     return (
         <div> 
-        {this.state.loggedIN==undefined ? "":<Link to="/" />}
+        {this.state.loggedIN==undefined ? "":history.push('/')}
         <Card className="text-center" style={{maxWidth:400+"px", margin: 50 +"px auto", borderRadius:50+"px"}}>
         <Card.Header style = {{background: "#e1a7fa", borderTopLeftRadius:50+"px", borderTopRightRadius:50+"px"}}>Login</Card.Header>
         <Card.Body>

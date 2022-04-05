@@ -16,16 +16,9 @@ function cookieGet(){
     return cookie.get('token');
 }
 
-const Alerting = ()=>{
-    return(
-        <Alert variant="success" style = {{position:"fixed",left:50+"%", margin: 80+"px  auto auto -130px", zIndex:20}}>
-          <Alert.Heading>Hey, nice to see you</Alert.Heading>
-          <p>
-            You are registered successfully:)
-          </p>
-        </Alert>
-    )
-}
+// const Alerting = ()=>{
+//   this.props.history.push('/')
+// }
 class Register extends React.Component{
     constructor(props) {
         super(props);
@@ -105,7 +98,7 @@ class Register extends React.Component{
     }
     return (
         <div>
-        {this.state.loggedIN==undefined ? "":<Alerting />}
+        {this.state.loggedIN==undefined ? "":history.push('/')}
         <Card className="text-center" style={{maxWidth:400+"px", margin: 50 +"px auto", borderRadius:50+"px"}}>
         <Card.Header style = {{background: "#e1a7fa", borderTopLeftRadius:50+"px", borderTopRightRadius:50+"px"}}>Register</Card.Header>
         <Card.Body>

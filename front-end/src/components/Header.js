@@ -64,10 +64,15 @@ const Navdrop = ()=>{
 const Navln = ()=>{
   return(
     <Nav className="justify-content-end" >
-      <Nav.Link><Link to="/login">Log in</Link></Nav.Link>
-      <Nav.Link><Link to="/register">Register</Link></Nav.Link>
-      {/* <Nav.Link to="/login">Log in</Nav.Link>
-      <Nav.Link to="/register">Register</Nav.Link> */}
+      <Nav.Link className="navbar-item"
+                activeClassName="is-active"
+                href="/login"
+                exact
+                >Log in</Nav.Link>
+      <Nav.Link className="navbar-item"
+                activeClassName="is-active"
+                href="/register"
+                exact>Register</Nav.Link>
     </Nav>
   )
 }
@@ -76,7 +81,7 @@ const Header = () =>{
   return(
     <Navbar expand="lg">
                   <Container>
-                    <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+                    <Navbar.Brand href="#home">Nigma Galaxy</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                       <Nav className="me-auto">
