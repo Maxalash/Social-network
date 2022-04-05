@@ -15,12 +15,6 @@ function cookieGet(){
     return cookie.get('token');
 }
 
-async function logggin(){
-   
-  if(this.state.loggedIN == 0){
-      <Link to="/" />
-  }
-}
 
 const Alerting = ()=>{
     return(
@@ -97,7 +91,7 @@ class Login extends React.Component{
   render(){
     return (
         <div> 
-        {this.state.loggedIN==undefined ? "":<Alerting />}
+        {this.state.loggedIN==undefined ? "":<Link to="/" />}
         <Card className="text-center" style={{maxWidth:400+"px", margin: 50 +"px auto", borderRadius:50+"px"}}>
         <Card.Header style = {{background: "#e1a7fa", borderTopLeftRadius:50+"px", borderTopRightRadius:50+"px"}}>Login</Card.Header>
         <Card.Body>

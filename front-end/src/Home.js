@@ -15,6 +15,7 @@ import './Home.css';
 import Header from './components/Header'
 import axios from "axios";
 import Footer from './components/Footer';
+import Post from './components/Post';
 import Cookies from 'universal-cookie';
 const cookie = new Cookies()
 
@@ -111,7 +112,7 @@ class Home extends React.Component {
                   </div>
                 </BrowserRouter> */}
                 <div className='postscontain'>
-                    POsts
+                    <Post />
                 </div>
                 <Footer />
                 
