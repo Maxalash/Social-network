@@ -31,7 +31,6 @@ def register(request):
 def author_posts(request, pk):
     posts = Post.objects.filter(author_id=pk)
     data = PostSerializer(posts, many=True).data
-    print(data)
     return Response(data)
 
 @api_view(['POST'])
@@ -70,3 +69,68 @@ def create_comment(request):
     else:
         return Response(serializer.errors)
 
+class PostLikeView(generics.RetrieveAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def retrieve(self, request,*args, **kwargs):
+        instance = self.get_object()
+        obj, cond = PostLike.objects.get_or_create(posts=instance, user=request.user)
+        if not cond:
+            obj.delete()
+        return Response({"Liked": cond})
+
+
+class CommentLikeView(generics.RetrieveAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def retrieve(self, request,*args, **kwargs):
+        instance = self.get_object()
+        obj, cond = CommentLike.objects.get_or_create(comment=instance, user=request.user)
+        if not cond:
+            obj.delete()
+        return Response({"Liked": cond})
+
+class PostMarkView(generics.RetrieveAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def retrieve(self, request,*args, **kwargs):
+        instance = self.get_object()
+        obj, cond = Bookmark.objects.get_or_create(post=instance, owner=request.user)
+        if not cond:
+            obj.delete()
+        return Response(cond)
+
+
+class PostUpdate(generics.UpdateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    queryset = Post.objects.all()
+    serializer_class = PostEditSerializer
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.user = request.user
+        instance.save()
+        serializer = self.get_serializer(instance, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
+
+class CommentUpdate(generics.UpdateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    queryset = Comment.objects.all()
+    serializer_class = CommentEditSerializer
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.user = request.user
+        instance.save()
+        serializer = self.get_serializer(instance, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
