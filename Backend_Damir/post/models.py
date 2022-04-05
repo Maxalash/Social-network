@@ -9,7 +9,15 @@ class Post(models.Model):
 
     @property
     def bookmark_count(self):
+<<<<<<< HEAD
         return self.bookmark_set.filter().count()
+=======
+        return self.bookmark_set.all().count()
+
+    @property
+    def likes_count(self):
+        return self.postlike_set.all().count()
+>>>>>>> upstream/main
 
 class PostImage(models.Model):
     image = models.ImageField(max_length=100)
@@ -23,6 +31,13 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE,related_name='post_comments')
     embedded_likes_count = models.IntegerField(default=0)
 
+<<<<<<< HEAD
+=======
+    @property
+    def likes_count(self):
+        return self.commentlike_set.all().count()
+
+>>>>>>> upstream/main
 class PostLike(models.Model):
     posts = models.ForeignKey('Post', on_delete=models.CASCADE)
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
@@ -41,19 +56,33 @@ class PostLike(models.Model):
         super().delete(*args,**kwargs)
 
 class CommentLike(models.Model):
+<<<<<<< HEAD
     posts = models.ForeignKey('Comment', on_delete=models.CASCADE)
+=======
+    comment = models.ForeignKey('Comment', on_delete=models.CASCADE)
+>>>>>>> upstream/main
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         if not self.id:
+<<<<<<< HEAD
             self.posts.embedded_likes_count += 1
             self.posts.save()
+=======
+            self.comment.embedded_likes_count += 1
+            self.comment.save()
+>>>>>>> upstream/main
 
         super().save(*args,**kwargs)
 
     def delete(self, *args, **kwargs):
+<<<<<<< HEAD
         self.posts.embedded_likes_count -= 1
         self.posts.save()
+=======
+        self.comment.embedded_likes_count -= 1
+        self.comment.save()
+>>>>>>> upstream/main
 
         super().delete(*args,**kwargs)
 
