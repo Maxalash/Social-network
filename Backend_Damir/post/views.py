@@ -33,6 +33,13 @@ def author_posts(request, pk):
     data = PostSerializer(posts, many=True).data
     return Response(data)
 
+@api_view(['GET'])
+@permission_classes((permissions.IsAuthenticated,))
+def all_posts(request):
+    posts = Post.objects.all()
+    data = PostSerializer(posts, many=True).data
+    return Response(data)
+
 @api_view(['POST'])
 @permission_classes((permissions.IsAuthenticated,))
 def make_post(request):

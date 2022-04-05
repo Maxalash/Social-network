@@ -6,9 +6,10 @@ app_name = 'post'
 
 urlpatterns = (
     # path('post_comments_count/<int:pk>/', views.count_comments),  # count comments
-    path('posts/',views.UserViewSet.as_view({'get': 'list'})),
+    path('users/',views.UserViewSet.as_view({'get': 'list'})),
 
-    path('posts/<int:pk>', views.author_posts), # get
+    path('author_posts/<int:pk>', views.author_posts), # get author posts
+    path('all_posts/', views.all_posts), # get all posts
     path('make_post/', views.make_post), # make post
     path('create_comment/', views.create_comment), # create comment
 
