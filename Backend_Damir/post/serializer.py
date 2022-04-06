@@ -25,7 +25,7 @@ class PostSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ['text']
+        fields = '__all__'
 
 class PostMakeSerializer(serializers.ModelSerializer):
     class Meta:

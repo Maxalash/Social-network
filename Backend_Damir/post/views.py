@@ -35,6 +35,13 @@ def author_posts(request, pk):
 
 @api_view(['GET'])
 @permission_classes((permissions.IsAuthenticated,))
+def post_comments(request, pk):
+    comments = Comment.objects.filter(post_id=pk)
+    data = CommentSerializer(comments, many=True).data
+    return Response(data)
+
+@api_view(['GET'])
+@permission_classes((permissions.IsAuthenticated,))
 def all_posts(request):
     posts = Post.objects.all()
     data = PostSerializer(posts, many=True).data

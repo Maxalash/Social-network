@@ -9,6 +9,8 @@ urlpatterns = (
     path('users/',views.UserViewSet.as_view({'get': 'list'})),
 
     path('author_posts/<int:pk>', views.author_posts), # get author posts
+    path('post_comments/<int:pk>', views.post_comments), # get post comments
+
     path('all_posts/', views.all_posts), # get all posts
     path('make_post/', views.make_post), # make post
     path('create_comment/', views.create_comment), # create comment
