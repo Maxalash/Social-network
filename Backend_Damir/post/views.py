@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from rest_framework.renderers import JSONRenderer
 from rest_framework.permissions import AllowAny
 from rest_framework.authtoken.models import Token
-
+from .permissions import *
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
@@ -115,7 +115,7 @@ class PostMarkView(generics.RetrieveAPIView):
 
 
 class PostUpdate(generics.UpdateAPIView):
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated,PostPermission)
     queryset = Post.objects.all()
     serializer_class = PostEditSerializer
 
@@ -129,7 +129,7 @@ class PostUpdate(generics.UpdateAPIView):
         return Response(serializer.data)
 
 class CommentUpdate(generics.UpdateAPIView):
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated,CommentPermission)
     queryset = Comment.objects.all()
     serializer_class = CommentEditSerializer
 
