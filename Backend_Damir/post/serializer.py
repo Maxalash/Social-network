@@ -17,15 +17,30 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = ['username','password']
 
+class PostImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PostImage
+        fields = '__all__'
+
 class PostSerializer(serializers.ModelSerializer):
+    images = serializers.SerializerMethodField()
     class Meta:
         model = Post
         fields = '__all__'
+    def get_images(self,obj):
+        images = obj.postimage_set.all()
+        return PostImageSerializer(images, many=True, context=self.context).data if images else None
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = '__all__'
+
+class BookmarkSerializer(serializers.ModelSerializer):
+    post = PostSerializer()
+    class Meta:
+        model = Bookmark
+        fields = ['id','post']
 
 class PostMakeSerializer(serializers.ModelSerializer):
     class Meta:

@@ -47,6 +47,13 @@ def all_posts(request):
     data = PostSerializer(posts, many=True).data
     return Response(data)
 
+@api_view(['GET'])
+@permission_classes((permissions.IsAuthenticated,))
+def bookmarked_posts(request):
+    posts = request.user.bookmark_set.all()
+    data = BookmarkSerializer(posts, many=True).data
+    return Response(data)
+
 @api_view(['POST'])
 @permission_classes((permissions.IsAuthenticated,))
 def make_post(request):
@@ -148,3 +155,17 @@ class CommentUpdate(generics.UpdateAPIView):
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         return Response(serializer.data)
+
+@api_view(['DELETE'])
+@permission_classes((permissions.IsAuthenticated, CommentPermission))
+def delete_comment(request,pk):
+    comment = Comment.objects.get(id=pk)
+    comment.delete()
+    return Response('Deleted')
+
+@api_view(['DELETE'])
+@permission_classes((permissions.IsAuthenticated, PostPermission))
+def delete_post(request,pk):
+    post = Post.objects.get(id=pk)
+    post.delete()
+    return Response('Deleted')
