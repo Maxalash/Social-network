@@ -10,6 +10,7 @@ urlpatterns = (
     path('all_posts/', views.all_posts), # get all posts
     path('bookmarked_posts/', views.bookmarked_posts), # get bookmarked posts
     path('make_post/', views.make_post), # make post
+    path('make_just_post/', views.make_just_post), # make post
     path('create_comment/', views.create_comment), # create comment
     path('delete_post/<int:pk>', views.delete_post),
     path('delete_comment/<int:pk>', views.delete_comment),

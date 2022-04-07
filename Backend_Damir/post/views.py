@@ -73,6 +73,16 @@ def make_post(request):
     return Response({'post':post_check.data,'images':image_create_serializer.data})
 @api_view(['POST'])
 @permission_classes((permissions.IsAuthenticated,))
+def make_just_post(request):
+    post_check = PostMakeSerializer(data=request.data)
+    if post_check.is_valid():
+        post_check.save(author=request.user)
+    else:
+        return Response(post_check.errors)
+    return Response({'post':post_check.data,})
+
+@api_view(['POST'])
+@permission_classes((permissions.IsAuthenticated,))
 def create_comment(request):
     serializer = CreateCommentSerializer(data=request.data)
     if serializer.is_valid():
