@@ -100,7 +100,7 @@ const Header = () =>{
                         </NavDropdown> */}
                       </Nav>
                       
-                        {cookieGet()==undefined ? <Navln />:<Navdrop />}
+                        {cookieGet() === undefined ? <Navln />:<Navdrop />}
                         
                     </Navbar.Collapse>
                   </Container>

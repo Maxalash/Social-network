@@ -1,14 +1,9 @@
 import React from 'react';
 import {
-  BrowserRouter,
-  Navigate,
-  Routes,
-  Router,
-  Route,
-  NavLink
+  Navigate
 } from "react-router-dom";
-import Login from "./Login"
-import Register from "./Register"
+import {Button, Card, ListGroup, ListGroupItem, Accordion} from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 // import { MemoryRouter, Switch, Route } from 'react-router-dom';
 // import { LinkContainer } from 'react-router-bootstrap';
 import './Home.css';
@@ -17,6 +12,7 @@ import axios from "axios";
 import Footer from './components/Footer';
 import Post from './components/Post';
 import Cookies from 'universal-cookie';
+import CreatePost from './components/CreatePost';
 const cookie = new Cookies()
 
 function cookieGet(){
@@ -48,37 +44,32 @@ function checkSession(){
         // error.message);
        });
 }
-
-const listPost = (list)=>{  
-    const listItems = list.map((ps) =>  
-        <Post 
-            author={ps['author']}
-            embedded_likes_count= {ps['embedded_likes_count']}
-            id= {ps['id']}
-            pub_date= {ps['pub_date']}
-            text= {ps['text']}
-            title= {ps['title']}
-        />  
-    );  
-    return listItems
+function CrePst(){
+    return <CreatePost />
 }
 
 class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            posts:[]
+            posts:null,
+            crshow: false
             // status: checkSession()
         };
+        this.showmod = this.showmod.bind(this);
         this.getPosts();
       }
    
     getPosts(){
+        const toke = cookieGet()
+        if(toke === null){
+            return []
+        }
         const requestOptions = {
             method:'GET',
             headers: { 
                 'Content-Type': 'application/json',
-                'Authorization':'Token b28d98c8c36b06500d73f255db11d07722df2c8d'
+                'Authorization':'Token '+toke
             }
         };
         
@@ -88,8 +79,12 @@ class Home extends React.Component {
           })
           .then(data => {
               this.setState({posts: data })
-              console.log(data)
           });
+    }
+
+    updpost(data){
+        console.log(this.state.posts)
+        // this.state.posts.push(data)
     }
 
     // renderPost(ps){
@@ -114,15 +109,20 @@ class Home extends React.Component {
     //         title= {ps['title']}
     //     />))
     // }
-
+    showmod(){
+        this.setState({crshow:true})
+    }
     render(){
         return (
             <div className = "body">
                 <Header />
                 <div className='postscontain'>
-                {this.state.posts.map((ps, key) => {
+                <Button onClick={this.showmod}>Create POST</Button>
+                {this.state.crshow === true ? <CreatePost updatepost = {this.updpost}/>:""}
+                {this.state.posts?.map((ps, key) => {
                     return (
-                        <Post 
+                        <Post
+                            key = {ps.id}
                             author={ps.author}
                             embedded_likes_count= {ps.embedded_likes_count}
                             id= {ps.id}
@@ -132,6 +132,14 @@ class Home extends React.Component {
                         />  
                     );
                 })}
+                {/* <Post 
+                            author="Auth"
+                            embedded_likes_count= "5"
+                            id= "1"
+                            pub_date= "date"
+                            text= "Text"
+                            title= "Title"
+                        />  */}
                 </div>
                 <Footer />
                 

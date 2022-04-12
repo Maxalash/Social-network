@@ -93,12 +93,12 @@ class Register extends React.Component{
   };
 
   render(){
-    if(this.state.loggedIN == 0){
+    if(this.state.loggedIN ===  0){
         <Link to="/" />
     }
     return (
         <div>
-        {this.state.loggedIN==undefined ? "":history.push('/')}
+        {this.state.loggedIN === undefined ? "":""}
         <Card className="text-center" style={{maxWidth:400+"px", margin: 50 +"px auto", borderRadius:50+"px"}}>
         <Card.Header style = {{background: "#e1a7fa", borderTopLeftRadius:50+"px", borderTopRightRadius:50+"px"}}>Register</Card.Header>
         <Card.Body>

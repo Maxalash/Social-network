@@ -2,3 +2,12 @@
 .postscontain{
     min-height: 754px;
 }
+.createpost{
+    margin: 0 auto 10px;
+    text-align: center;
+    background-color: blueviolet;
+    color: white;
+    padding: 5px;
+    max-width: 600px;
+    border-color: darkorchid;
+}
