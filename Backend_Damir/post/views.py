@@ -1,3 +1,4 @@
+
 from django.shortcuts import render
 from .serializer import *
 from .models import *
@@ -50,7 +51,10 @@ def bookmarked_posts(request):
 @api_view(['POST'])
 @permission_classes((permissions.IsAuthenticated,))
 def make_post(request):
-    data = dict(request.data.lists())
+    print("HERE", request.POST)
+    data = dict(request.data)
+    print('--------------------------------------')
+    print(request.data, request.data.values())
     images = []
     for image in data['image']:
         images.append({'image' : image,'owner' : request.user.id})
@@ -67,10 +71,13 @@ def make_post(request):
             else:
                 return Response(image_create_serializer.errors)
         else:
+            print('post make error')
             return Response(post_check.errors)
     else:
+        print('image error')
         return Response(image_check.errors)
     return Response({'post':post_check.data,'images':image_create_serializer.data})
+
 @api_view(['POST'])
 @permission_classes((permissions.IsAuthenticated,))
 def make_just_post(request):
