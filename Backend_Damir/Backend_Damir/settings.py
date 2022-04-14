@@ -142,7 +142,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-MEDIA_ROOT = '/home/damir/PycharmProjects/Social-network/Backend_Damir/'
+MEDIA_ROOT = 'C:/Users/mahmu/OneDrive/Documents/GitTrash/Social-network/Backend_Damir/'
 
 MEDIA_URL = '/media/'
 

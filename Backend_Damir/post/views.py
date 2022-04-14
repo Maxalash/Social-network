@@ -48,7 +48,7 @@ def post_comments(request, pk):
 @permission_classes((permissions.IsAuthenticated,))
 def all_posts(request):
     posts = Post.objects.all().order_by('-pub_date')
-    data = PostSerializer(posts, many=True).data
+    data = PostSerializer(posts, many=True, context={'request': request}).data
     return Response(data)
 
 
