@@ -69,10 +69,12 @@ class PostSerializer(serializers.ModelSerializer):
         return obj.likes_count
 
     def get_liked(self,obj):
-        like = PostLike.objects.filter(posts=obj,user=obj.author)
+        user = None
+        request = self.context.get("request")
+        if request and hasattr(request, "user"):
+            user = request.user
+        like = PostLike.objects.filter(posts=obj,user=user)
         return True if like else False
-        # print(obj.author.id)
-        # return Sim(obj).data
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
