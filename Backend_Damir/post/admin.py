@@ -9,4 +9,3 @@ admin.site.register(Bookmark)
 admin.site.register(PostImage)
 admin.site.register(PostVideo)
 admin.site.register(PostAudio)
-

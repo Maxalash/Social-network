@@ -80,4 +80,3 @@ class PostAudio(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     owner = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     audio = models.FileField(max_length=254,upload_to='post/media/audios')
-

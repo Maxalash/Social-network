@@ -50,13 +50,6 @@ def all_posts(request):
     data = PostSerializer(posts, many=True, context={'request': request}).data
     return Response(data)
 
-@api_view(['GET'])
-@permission_classes((permissions.IsAuthenticated,))
-def all_comments(request):
-    comments = Comment.objects.all()
-    data = CommentSerializer(comments, many=True, context={'request': request}).data
-    return Response(data)
-
 
 @api_view(['GET'])
 @permission_classes((permissions.IsAuthenticated,))
