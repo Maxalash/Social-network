@@ -1,15 +1,16 @@
 from django.db import models
 
+class Chat(models.Model):
+    user = models.ManyToManyField('auth.User',related_name='user_chats')
+    created_date = models.DateTimeField(auto_now_add=True)
+
 class Message(models.Model):
     text = models.TextField()
-    sender = models.ForeignKey('auth.User', related_name='sending_message', on_delete=models.DO_NOTHING)
-    receiver = models.ForeignKey('auth.User', related_name='receiving_message', on_delete=models.DO_NOTHING)
-    send_date = models.DateTimeField(auto_now_add=True,)
-
-    # seen_for_sender = models.BooleanField(default=True)
-    # seen_for_receiver = models.BooleanField(default=True)
+    owner = models.ForeignKey('auth.User', on_delete=models.DO_NOTHING)
+    send_date = models.DateTimeField(auto_now_add=True)
+    chat = models.ForeignKey(Chat,on_delete=models.DO_NOTHING)
 
 class MessageImage(models.Model):
-    message = models.ForeignKey(Message,on_delete=models.CASCADE)
+    message = models.ForeignKey(Message, on_delete=models.CASCADE)
     owner = models.ForeignKey('auth.User', on_delete=models.DO_NOTHING)
     image = models.ImageField()
