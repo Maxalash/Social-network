@@ -23,11 +23,12 @@ SECRET_KEY = 'django-insecure--px6w#o1-rv1q_k-9ll)&1bk@(nc9yx47hzglarst#40$x_0^o
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
+ASGI_APPLICATION = 'Backend_Damir.routing.application'
 
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -54,11 +55,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-]
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:3000',
+# ]
 
-# CORS_ALLOW_ALL_ORIGINS: True
+CORS_ALLOW_ALL_ORIGINS: True
 
 ROOT_URLCONF = 'Backend_Damir.urls'
 
@@ -157,4 +158,11 @@ STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}

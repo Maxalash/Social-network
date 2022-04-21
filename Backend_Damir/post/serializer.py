@@ -7,6 +7,11 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = '__all__'
 
+class UsernameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username']
+
 
 class UserPasswordSerializer(serializers.ModelSerializer):
     class Meta:
@@ -48,6 +53,8 @@ class PostSerializer(serializers.ModelSerializer):
     audios = serializers.SerializerMethodField()
     likes_count = serializers.SerializerMethodField()
     liked = serializers.SerializerMethodField()
+    bookmarked = serializers.SerializerMethodField()
+    author_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
@@ -75,6 +82,17 @@ class PostSerializer(serializers.ModelSerializer):
             user = request.user
         like = PostLike.objects.filter(posts=obj,user=user)
         return True if like else False
+
+    def get_bookmarked(self, obj):
+        user = None
+        request = self.context.get("request")
+        if request and hasattr(request, 'user'):
+            user = request.user
+        bookmark = Bookmark.objects.filter(post=obj,owner=user)
+        return True if bookmark else False
+
+    def get_author_name(self,obj):
+        return str(obj.author)
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
