@@ -16,7 +16,7 @@ class Post(models.Model):
         return self.postlike_set.all().count()
 
 class PostImage(models.Model):
-    image = models.ImageField(max_length=100)
+    image = models.ImageField(max_length=100, upload_to='post/media/images')
     owner = models.ForeignKey('auth.User', on_delete=models.DO_NOTHING, default=None)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True, null=True)
 
@@ -70,3 +70,14 @@ class Bookmark(models.Model):
     bookmarked = models.DateTimeField(auto_now_add=True,)
     owner = models.ForeignKey('auth.User',on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE,related_name='bookmark_set')
+
+class PostVideo(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    owner = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    video = models.FileField(max_length=254,upload_to='post/media/videos')
+
+class PostAudio(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    owner = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    audio = models.FileField(max_length=254,upload_to='post/media/audios')
+
