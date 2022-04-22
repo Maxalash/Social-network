@@ -56,6 +56,7 @@ class PostSerializer(serializers.ModelSerializer):
     bookmarked = serializers.SerializerMethodField()
     author_name = serializers.SerializerMethodField()
 
+
     class Meta:
         model = Post
         fields = '__all__'
@@ -95,10 +96,28 @@ class PostSerializer(serializers.ModelSerializer):
         return str(obj.author)
 
 class CommentSerializer(serializers.ModelSerializer):
+    likes_count = serializers.SerializerMethodField()
+    liked = serializers.SerializerMethodField()
+    author_name = serializers.SerializerMethodField()
+
     class Meta:
         model = Comment
         fields = '__all__'
 
+    def get_author_name(self, obj):
+        print(str(obj.owner))
+        return str(obj.owner)
+
+    def get_likes_count(self, obj):
+        return obj.likes_count
+
+    def get_liked(self, obj):
+        user = None
+        request = self.context.get("request")
+        if request and hasattr(request, "user"):
+            user = request.user
+        like = CommentLike.objects.filter(comment=obj, user=user)
+        return True if like else False
 
 class BookmarkSerializer(serializers.ModelSerializer):
     post = PostSerializer()
