@@ -63,6 +63,8 @@ def bookmarked_posts(request):
 @api_view(['POST'])
 @permission_classes((permissions.IsAuthenticated,))
 def make_post(request):
+    print(request.data)
+    print('------------------')
     data = dict(request.data.lists())
     videos = []
     images = []
@@ -82,7 +84,11 @@ def make_post(request):
             return Response(video_check.errors)
     if 'image' in data:
         for image in data['image']:
+            print('---',type(image))
             images.append({'image' : image,'owner' : request.user.id})
+        print(data['image'])
+        print('--------------------')
+        print(type(data['image']))
         image_check = ImageSerializer(data=images, many=True)
         if image_check.is_valid():
             has_image = True
