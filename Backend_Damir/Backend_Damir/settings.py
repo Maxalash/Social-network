@@ -81,6 +81,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Backend_Damir.wsgi.application'
+ASGI_APPLICATION = 'Backend_Damir.routing.application'
 
 
 # Database

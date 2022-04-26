@@ -5,8 +5,8 @@ app_name = 'chat'
 
 
 urlpatterns = (
-
     path('load_chats/',views.load_chats),
-    path('start_chat/',views.create_chat),
+    path('load_messages/<int:pk>',views.load_chats),
 
+    path('start_chat/',views.create_chat),
 )

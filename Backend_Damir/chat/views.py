@@ -18,6 +18,13 @@ def load_chats(request):
     data = ChatSerializer(chats, many=True).data
     return Response(data)
 
+@api_view(['GET'])
+@permission_classes((permissions.IsAuthenticated,))
+def load_messages(request,pk):
+    messages = Message.objects.filter(chat_id=pk).order_by('send_date')
+    data = MessageSerializer(messages, many=True).data
+    return Response(data)
+
 
 @api_view(['POST'])
 @permission_classes((permissions.IsAuthenticated,))

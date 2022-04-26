@@ -80,7 +80,6 @@ def make_post(request):
         if video_check.is_valid():
             has_video = True
         else:
-            print('asdsa')
             return Response(video_check.errors)
     if 'image' in data:
         for image in data['image']:

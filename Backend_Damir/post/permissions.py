@@ -39,3 +39,4 @@ class PostPermission(permissions.BasePermission):
         if Post.objects.get(id=view.kwargs.get('pk')).author == request.user:
             return True
         return False
+

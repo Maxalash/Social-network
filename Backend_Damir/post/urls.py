@@ -24,5 +24,4 @@ urlpatterns = (
     path('edit_comment/<int:pk>/',views.CommentUpdate.as_view()), # edit comment
 
     path('register/',views.register), # register
-    path('login/', obtain_auth_token, name='api_token_auth'), # get token
-)
+    path('login/', obtain_auth_token, name='api_token_auth')) # get token

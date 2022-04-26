@@ -8,6 +8,13 @@ class MessageSerializer(serializers.ModelSerializer):
         model = Message
         fields = '__all__'
 
+
+class MessageSendSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Message
+        fields = ['text','owner','chat']
+
+
 class MessageLoadSerializer(serializers.ModelSerializer):
     messages = serializers.SerializerMethodField()
 
@@ -18,6 +25,7 @@ class MessageLoadSerializer(serializers.ModelSerializer):
     def get_messages(self, obj):
         messages = Message.objects.filter(chat=obj)
         return MessageSerializer(messages,many = True).data
+
 
 class ChatSerializer(serializers.ModelSerializer):
     class Meta:
