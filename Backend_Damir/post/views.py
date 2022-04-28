@@ -149,7 +149,7 @@ class PostLikeView(generics.RetrieveAPIView):
         obj, cond = PostLike.objects.get_or_create(posts=instance, user=request.user)
         if not cond:
             obj.delete()
-        return Response({"Liked": cond})
+        return Response({"Liked": cond,'likes_count': instance.likes_count})
 
 
 class CommentLikeView(generics.RetrieveAPIView):
@@ -161,7 +161,7 @@ class CommentLikeView(generics.RetrieveAPIView):
         obj, cond = CommentLike.objects.get_or_create(comment=instance, user=request.user)
         if not cond:
             obj.delete()
-        return Response({"Liked": cond})
+        return Response({"Liked": cond,'likes_count': instance.likes_count})
 
 
 class PostMarkView(generics.RetrieveAPIView):
