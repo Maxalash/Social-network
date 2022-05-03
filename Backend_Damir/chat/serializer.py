@@ -49,7 +49,6 @@ class ChatSerializer(serializers.ModelSerializer):
         model = Chat
         fields = '__all__'
     def get_friend(self,obj):
-        print('asdasd')
 
         # print(obj.user)
         # for i in obj.user:

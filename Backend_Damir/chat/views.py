@@ -30,7 +30,7 @@ def create_chat(request):
     exists = False
     chat_id = 0
     for chat in chats:
-        if request.user.id in chat.user.values_list()[0] and int(request.data['user']) in chat.user.values_list()[1]:
+        if int(request.data['user']) in chat.user.values_list()[0] or int(request.data['user']) in chat.user.values_list()[1]:
             exists = True
             chat_id = chat.id
     serializer = CreateChatSerializer(data=request.data)

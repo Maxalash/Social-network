@@ -2,6 +2,7 @@ from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 import json
 from .serializer import MessageSendSerializer, MessageSerializer
+from rest_framework.authtoken.models import Token
 
 class ChatConsumer(WebsocketConsumer):
 
@@ -11,12 +12,17 @@ class ChatConsumer(WebsocketConsumer):
         self.room_group_name = 'chat_%s' % self.chat_id
         print(self.room_group_name)
 
+        self.user = self.scope["user"]
+        print(self.user)
+
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name,
             self.channel_name
         )
 
-        self.accept()
+        self.accept('Token')
+        token = self.scope['subprotocols'][1]
+        self.client = Token.objects.get(key=token).user
 
     def disconnect(self, close_code):
         async_to_sync(self.channel_layer.group_discard)(
@@ -27,8 +33,7 @@ class ChatConsumer(WebsocketConsumer):
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
-        id = text_data_json['id']
-        data = {'text' : message, 'chat' : self.chat_id, 'owner' : id}
+        data = {'text' : message, 'chat' : self.chat_id, 'owner' : self.client.id}
         serializer = MessageSendSerializer(data=data)
         if serializer.is_valid():
             self.messager = serializer.save()
@@ -43,7 +48,6 @@ class ChatConsumer(WebsocketConsumer):
             {
                 'type': 'chat_message',
                 'message': self.messager.text,
-                'id': id,
                 'send_date': data['send_date'],
                 'message_id': data['id']
             }
@@ -51,7 +55,6 @@ class ChatConsumer(WebsocketConsumer):
 
     def chat_message(self, event):
         message = event['message']
-        user_id = event['id']
         send_date = event['send_date']
         message_id = event['message_id']
         print(message)
@@ -60,8 +63,8 @@ class ChatConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps({
             'event': "Send",
             'message': message,
-            'user_id': user_id,
             'chat_id': self.chat_id,
+            'username': self.client.username,
             'send_date': send_date,
             'message_id': message_id,
         }))
