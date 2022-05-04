@@ -56,7 +56,6 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://127.0.0.1:3000',
     'http://localhost:3000',
 ]
 
@@ -82,7 +81,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Backend_Damir.wsgi.application'
-ASGI_APPLICATION = 'Backend_Damir.routing.application'
 
 
 # Database
