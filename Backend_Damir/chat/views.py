@@ -19,8 +19,9 @@ def load_chats(request):
 @permission_classes((permissions.IsAuthenticated,))
 def load_messages(request,pk):
     messages = Message.objects.filter(chat_id=pk).order_by('send_date')
+    session, cond = Session.objects.get_or_create(user=request.user, chat_id=pk)
     data = MessageSerializer(messages, many=True).data
-    return Response(data)
+    return Response({'messages':data,"session_id":session.id})
 
 
 @api_view(['POST'])
@@ -38,8 +39,8 @@ def create_chat(request):
         if not exists:
             users = [request.user.id,request.data['user']]
             chat_id = serializer.save(user=users)
-            return Response(chat_id)
         else:
+            session,cond = Session.objects.get_or_create(user=request.user, chat_id=chat_id)
             return Response(chat_id)
     else:
         return Response(serializer.errors)
