@@ -38,9 +38,8 @@ def create_chat(request):
     if serializer.is_valid():
         if not exists:
             users = [request.user.id,request.data['user']]
-            chat_id = serializer.save(user=users)
+            serializer.save(user=users)
         else:
-            session,cond = Session.objects.get_or_create(user=request.user, chat_id=chat_id)
             return Response(chat_id)
     else:
         return Response(serializer.errors)
