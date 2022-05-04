@@ -10,6 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class MessageSerializer(serializers.ModelSerializer):
     yours = serializers.SerializerMethodField()
+    owner = serializers.SerializerMethodField()
 
     class Meta:
         model = Message
@@ -21,6 +22,9 @@ class MessageSerializer(serializers.ModelSerializer):
         if request and hasattr(request, "user"):
             user = request.user
         return True if user == obj.owner else False
+
+    def get_owner(self,obj):
+        return obj.owner.username
 
 class MessageSendSerializer(serializers.ModelSerializer):
     class Meta:
