@@ -9,4 +9,5 @@ urlpatterns = (
     path('load_messages/<int:pk>',views.load_messages),
 
     path('start_chat/',views.create_chat),
+    path('users/',views.UserList.as_view()),
 )
