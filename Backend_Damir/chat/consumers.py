@@ -22,8 +22,7 @@ class ChatConsumer(WebsocketConsumer):
         self.accept('Token')
         token = self.scope['subprotocols'][1]
         self.client = Token.objects.get(key=token).user
-        session, cond = Session.objects.get_or_create(user=self.client, chat_id=self.chat_id)
-        self.session_id = session.id
+        
 
 
     def disconnect(self, close_code):
@@ -35,7 +34,8 @@ class ChatConsumer(WebsocketConsumer):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
         data = {'text' : message, 'chat' : self.chat_id, 'owner' : self.client.id}
-
+        session, cond = Session.objects.get_or_create(user=self.client, chat_id=self.chat_id)
+        
         serializer = MessageSendSerializer(data=data)
         if serializer.is_valid():
             self.messager = serializer.save()
@@ -48,7 +48,8 @@ class ChatConsumer(WebsocketConsumer):
                 'type': 'chat_message',
                 'message': data['text'],
                 'send_date': data['send_date'],
-                'message_id': data['id']
+                'message_id': data['id'],
+                'session_id': session.id
             }
         )
 
@@ -56,7 +57,7 @@ class ChatConsumer(WebsocketConsumer):
         message = event['message']
         send_date = event['send_date']
         message_id = event['message_id']
-
+        session_id = event['session_id']
         self.send(text_data=json.dumps({
             'event': "Send",
             'message': message,
@@ -64,5 +65,5 @@ class ChatConsumer(WebsocketConsumer):
             'username': self.client.username,
             'send_date': send_date,
             'message_id': message_id,
-            'session_id': self.session_id
+            'session_id': session_id
         }))
