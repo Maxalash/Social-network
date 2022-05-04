@@ -9,10 +9,18 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['username','id']
 
 class MessageSerializer(serializers.ModelSerializer):
+    yours = serializers.SerializerMethodField()
+
     class Meta:
         model = Message
         fields = '__all__'
 
+    def get_yours(self, obj):
+        user = None
+        request = self.context.get("request")
+        if request and hasattr(request, "user"):
+            user = request.user
+        return True if user == obj.owner else False
 
 class MessageSendSerializer(serializers.ModelSerializer):
     class Meta:
