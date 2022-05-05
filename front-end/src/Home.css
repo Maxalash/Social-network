@@ -1,13 +1,18 @@
 
 .postscontain{
     min-height: 754px;
+    max-width: 600px;
+    margin: 0 auto;
+    justify-content: center;
 }
 .createpost{
-    margin: 0 auto 10px;
+    width: 100%;
+    margin: 5px auto;
     text-align: center;
     background-color: blueviolet;
     color: white;
-    padding: 5px;
+    padding: 5px 40%;
+    border-radius: 10px;
     max-width: 600px;
     border-color: darkorchid;
 }

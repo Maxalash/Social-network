@@ -1,5 +1,5 @@
 import { useState, useEffect, React } from 'react';
-import {Navbar, Container, Nav, NavDropdown, Navlink} from 'react-bootstrap';
+import {Navbar, Container, Nav, NavDropdown, Navlink, NavLink} from 'react-bootstrap';
 import "./Header.css"
 import {
     BrowserRouter,
@@ -53,7 +53,7 @@ const Navdrop = ()=>{
   return(
     <Nav className="justify-content-end" >
       <NavDropdown title="My pfofile" id='basic-nav-dropdown'>
-        <NavDropdown.Item href="#profile">My profile</NavDropdown.Item>
+        <NavDropdown.Item href="/myprofile">My profile</NavDropdown.Item>
         <NavDropdown.Divider />
         <NavDropdown.Item onClick={() => logout("Polo Ralph Lauren")}>Log out</NavDropdown.Item>
       </NavDropdown>
@@ -64,15 +64,15 @@ const Navdrop = ()=>{
 const Navln = ()=>{
   return(
     <Nav className="justify-content-end" >
-      <Nav.Link className="navbar-item"
-                activeClassName="is-active"
+      <NavLink className="navbar-item"
+                activeclassname="is-active"
                 href="/login"
-                exact
-                >Log in</Nav.Link>
-      <Nav.Link className="navbar-item"
-                activeClassName="is-active"
+                exact = "true"
+                >Log in</NavLink>
+      <NavLink className="navbar-item"
+                activeclassame="is-active"
                 href="/register"
-                exact>Register</Nav.Link>
+                exact = "true">Register</NavLink>
     </Nav>
   )
 }
@@ -81,7 +81,7 @@ const Header = () =>{
   return(
     <Navbar expand="lg">
                   <Container>
-                    <Navbar.Brand href="#home">Nigma Galaxy</Navbar.Brand>
+                    <Navbar.Brand href="/">Nigma Galaxy</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                       <Nav className="me-auto">

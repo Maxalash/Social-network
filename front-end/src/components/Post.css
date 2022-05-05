@@ -3,3 +3,27 @@
     margin: 0 auto 10px;
     border-color: darkorchid;
 }
+audio{
+    margin-bottom: 15px;
+}
+.col *{
+    float: left;
+    margin-left: 5px;
+}
+
+/* .col{
+    white-space: nowrap;
+} */
+
+.inputbtn{
+    display: flex;
+    margin:0 auto;
+    border-radius: 7px;
+    border:2px groove rgb(187, 127, 216);
+    color:rgb(187, 127, 216);
+    background-color: white;
+}
+
+/* .modal-dialog{
+    transition: 2s;
+} */

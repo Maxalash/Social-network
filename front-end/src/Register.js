@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import axios from "axios"
 import { Link } from 'react-router-dom';
 import { Card, Alert } from 'react-bootstrap';
+import './index.css';
 import Cookies from 'universal-cookie';
 const cookie = new Cookies()
 
@@ -29,33 +30,18 @@ class Register extends React.Component{
         };
 
         this.loginSubmit = this.loginSubmit.bind(this);
+        this.checkLog()
       }
     
-
-//   handleValidation(event){
-    // let formIsValid = true;
-
-    // if (!email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
-    //   formIsValid = false;
-    //   this.setState({usernameError:"Email not valid"});
-    //   return false;
-    // } else {
-    //   this.setState({usernameError:""});
-    //   formIsValid = true;
-    // }
-
-    // if (!password.match(/^[a-zA-Z]{8,22}$/)) {
-    //   formIsValid = false;
-    //   this.setState({passwordError:"Only Letters and length must best min 8 Chracters and Max 22 Chracters"});
       
-    //   return false;
-    // } else {
-    //   this.setState({passwordError:""});
-    //   formIsValid = true;
-    // }
+      checkLog(){
+        if(this.state.loggedIN!=undefined){
+           document.location.href= '/';
+        }else{
+          console.log('login required');
 
-    // return formIsValid;
-//   };
+        }
+      }
 
   loginSubmit(e){
     e.preventDefault();
@@ -73,6 +59,10 @@ class Register extends React.Component{
     };
     fetch('http://127.0.0.1:8000/post/register/', requestOptions)
     .then(res => {
+      if (res.status >= 400 ) {
+        console.log("Error bad request")
+        return null
+      }
         return res.json();
       })
       .then(data => {
@@ -82,13 +72,13 @@ class Register extends React.Component{
       })
     fetch('http://127.0.0.1:8000/post/login/', requestOptions)
     .then(res => {
+        if(res.status>=400) document.location.href = '/'
+        return null
         return res.json();
       })
       .then(data => {
         var tooken = data
-        createCookies(data)
         console.log(tooken)
-        this.setState({loggedIN: cookieGet()})
       })
   };
 
@@ -98,20 +88,20 @@ class Register extends React.Component{
     }
     return (
         <div>
-        {this.state.loggedIN === undefined ? "":""}
+        {this.state.loggedIN === 'undefined'||this.state.loggedIN===undefined ? "":document.location.href='/login'}
         <Card className="text-center" style={{maxWidth:400+"px", margin: 50 +"px auto", borderRadius:50+"px"}}>
         <Card.Header style = {{background: "#e1a7fa", borderTopLeftRadius:50+"px", borderTopRightRadius:50+"px"}}>Register</Card.Header>
         <Card.Body>
         <form id="loginform" onSubmit={this.loginSubmit}>
                   <div className="form-group">
-                    <label>Email address</label>
+                    <label>Username</label>
                     <input
                       type="text"
                       className="form-control"
                     //   id="EmailInput"
                     //   name="EmailInput"
                     //   aria-describedby="emailHelp"
-                      placeholder="Enter email"
+                      placeholder="Enter username"
                       onChange={(event) => {
                           this.setState({username: event.target.value})
                         }}

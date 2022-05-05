@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import axios from "axios"
 import { Link } from 'react-router-dom';
 import { Card, Alert } from 'react-bootstrap';
+import './index.css'
 import Cookies from 'universal-cookie';
 const cookie = new Cookies()
 
@@ -28,35 +29,18 @@ class Login extends React.Component{
             password: "damir123",
             loggedIN: cookieGet()
         };
-
         this.loginSubmit = this.loginSubmit.bind(this);
       }
     
+      // checkLog(){
+      //   if(this.state.loggedIN!=undefined){
+      //      document.location.href= '/';
+      //   }else{
+      //     console.log('login required');
 
-//   handleValidation(event){
-    // let formIsValid = true;
+      //   }
+      // }
 
-    // if (!email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
-    //   formIsValid = false;
-    //   this.setState({usernameError:"Email not valid"});
-    //   return false;
-    // } else {
-    //   this.setState({usernameError:""});
-    //   formIsValid = true;
-    // }
-
-    // if (!password.match(/^[a-zA-Z]{8,22}$/)) {
-    //   formIsValid = false;
-    //   this.setState({passwordError:"Only Letters and length must best min 8 Chracters and Max 22 Chracters"});
-      
-    //   return false;
-    // } else {
-    //   this.setState({passwordError:""});
-    //   formIsValid = true;
-    // }
-
-    // return formIsValid;
-//   };
 
   loginSubmit(e){
     e.preventDefault();
@@ -72,34 +56,40 @@ class Login extends React.Component{
     };
     fetch('http://127.0.0.1:8000/post/login/', requestOptions)
     .then(res => {
-        return res.json();
+      if (res.status >= 400 ) {
+        console.log("Error bad request")
+        return null
+      }
+      return res.json();
       })
       .then(data => {
+        if (data === null) return null
         var tooken = data
         createCookies(data)
-        // this.props.history.push('/')
-        console.log(tooken)
         this.setState({loggedIN: cookieGet()})
-      })
+      }).catch(function(error) {
+        console.log('There has been a problem with your fetch operation: ', 
+        error.message);
+       });
   };
 
   render(){
     return (
         <div> 
-        {this.state.loggedIN === undefined ? "":"history.push('/')"}
+        {this.state.loggedIN === undefined ? "":document.location.href='/'}
         <Card className="text-center" style={{maxWidth:400+"px", margin: 50 +"px auto", borderRadius:50+"px"}}>
         <Card.Header style = {{background: "#e1a7fa", borderTopLeftRadius:50+"px", borderTopRightRadius:50+"px"}}>Login</Card.Header>
         <Card.Body>
         <form id="loginform" onSubmit={this.loginSubmit}>
                   <div className="form-group">
-                    <label>Email address</label>
+                    <label>Username</label>
                     <input
                       type="text"
                       className="form-control"
                     //   id="EmailInput"
                     //   name="EmailInput"
                     //   aria-describedby="emailHelp"
-                      placeholder="Enter email"
+                      placeholder="Enter username"
                       onChange={(event) => {
                           this.setState({username: event.target.value})
                         }}
@@ -111,7 +101,7 @@ class Login extends React.Component{
                   <div className="form-group">
                     <label>Password</label>
                     <input
-                      type="text"
+                      type="password"
                       className="form-control"
                     //   id="exampleInputPassword1"
                       placeholder="Password"
