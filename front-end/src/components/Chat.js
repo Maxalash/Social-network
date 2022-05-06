@@ -29,14 +29,13 @@ function cookieGet() {
 class Chat extends Component {
   chatContainer = React.createRef();
   state = {
-    id: this.props.id,
     messages: null,
     value: ""
   };
-  client = new W3CWebSocket('ws://127.0.0.1:8000/ws/chat/'+this.state.id+'/', ['Token', cookieGet()]);
-  chat_id=this.state.id
+  client = new W3CWebSocket('ws://127.0.0.1:8000/ws/chat/'+ this.props.id+'/', ['Token', cookieGet()]);
+  // chat_id= this.props.id
   loadMessages() {
-    let url = 'http://localhost:8000/chat/load_messages/'+this.state.id;
+    let url = 'http://localhost:8000/chat/load_messages/'+ this.props.id;
     
     console.log(url)
     const toke = cookieGet()
@@ -117,11 +116,11 @@ class Chat extends Component {
     document.querySelector('#chat-message-submit').onclick = (e) => {
       var messageInputDom = document.querySelector('#chat-message-input');
       var message = messageInputDom.value;
-      console.log(this.chat_id)
+      // console.log(this.chat_id)
       if (message) this.client.send(JSON.stringify({
 
-        // 'id':(this.state.id ? this.state.id: ''),
-        'chat_id': 2,
+        // 'id':( this.props.id ?  this.props.id: ''),
+        'chat_id': this.props.id,
         'message': message
       }));
       // this.setState({value: ""})
@@ -147,7 +146,7 @@ class Chat extends Component {
     });
   };
   // riseID(){
-  //   let ids = this.state.id;
+  //   let ids =  this.props.id;
   //   ids +=1;
   //   this.setState({id:ids})
   //   return (ids-1);
@@ -177,7 +176,7 @@ class Chat extends Component {
         <div ref={this.chatContainer} className="chatdatascroller">
 
           {this.state.messages?.map((txs, index) => {
-            // console.log(txs.user_id+" "+this.state.id+" "+(txs.user_id==this.state.id))
+            // console.log(txs.user_id+" "+ this.props.id+" "+(txs.user_id== this.props.id))
             if (txs.yours) {
               return (<div key={txs.id} className="sendedmessage">
                 <p className='name_date'>

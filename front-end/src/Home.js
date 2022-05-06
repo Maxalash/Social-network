@@ -130,7 +130,6 @@ class Home extends React.Component {
                         <Post
                             key = {ps.id}
                             author={ps.author_name}
-                            embedded_likes_count= {ps.embedded_likes_count}
                             id= {ps.id}
                             pub_date= {ps.pub_date}
                             text= {ps.text}
@@ -139,7 +138,7 @@ class Home extends React.Component {
                             video = {ps.videos}
                             audio = {ps.audios}
                             liked={ps.liked}
-                            likes_count ={ps.likes_count}
+                            likes_count ={ps.embedded_likes_count}
                             bookmarked = {ps.bookmarked}
                             updpost = {this.getPosts}
                         />  

@@ -118,20 +118,9 @@ main {
     margin-top: 56px;
 }
 
-.accordion {
-    margin: 0 auto;
-}
 
-.accordion-item:active {
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-}
 
-.accordion-body {
 
-    min-height: 500px;
-
-}
 
 .chatdata {
     display: block;

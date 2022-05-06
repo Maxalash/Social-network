@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import EditPost from "./EditPost";
 import Comment from "./Comment";
+import axios from "axios";
 
 
 import Cookies from 'universal-cookie';
@@ -25,13 +26,20 @@ class Post extends React.Component {
       bkmark: this.props.bookmarked,
       likes: this.props.liked,
       likenum: this.props.likes_count,
-      comments: []
+      comments: [],
+      commtxt:''
     }
     // console.log(this.props.liked)
     this.sendId = this.sendId.bind(this);
     this.showmod = this.showmod.bind(this);
     this.bookmrk = this.bookmrk.bind(this);
     this.closemod = this.closemod.bind(this);
+    this.getComments = this.getComments.bind(this)
+    this.createComment = this.createComment.bind(this)
+  }
+  componentDidMount(){
+    this.getComments()
+
   }
   bookmrk(e) {
     e.preventDefault()
@@ -95,7 +103,9 @@ class Post extends React.Component {
     this.setState({ show: false })
   }
 
-  getComments() {
+  getComments(id) {
+    let idm
+    this.props? idm=this.props.id:idm=id
     const toke = cookieGet()
     if (toke === null) {
       return []
@@ -107,12 +117,13 @@ class Post extends React.Component {
         'Authorization': 'Token ' + toke
       }
     };
-
-    fetch('http://127.0.0.1:8000/post/post_comments/' + this.props.id, requestOptions)
+    // console.log(this.props.id)
+    fetch('http://127.0.0.1:8000/post/post_comments/' + idm, requestOptions)
       .then(res => {
         return res.json();
       })
       .then(data => {
+        // console.log(data)
         this.setState({ comments: data })
       });
   }
@@ -139,9 +150,30 @@ class Post extends React.Component {
       })
       .then(data => {
         console.log(data)
-        this.props.updpost(this.props.id)
+        this.props.updpost()
 
       });
+  }
+  createComment(ev){
+    let form_data = new FormData();
+    form_data.append('text', this.state.commtxt)
+    form_data.append('post', this.props.id)
+    let url = 'http://localhost:8000/post/create_comment/';
+    const toke = cookieGet()
+    axios.post(url, form_data, {
+      headers: {
+        'content-type': 'multipart/form-data',
+        'Authorization': 'Token ' + toke
+      }
+    })
+      .then(res => {
+        this.getComments()
+        console.log(res.status)
+        console.log(res)
+        this.setState({commtxt:''})
+      })
+      .catch(err => console.log(err))
+
   }
   render() {
     return (
@@ -223,6 +255,7 @@ class Post extends React.Component {
               <Accordion.Header>Comments</Accordion.Header>
               <Accordion.Body>
                 {this.state.comments?.map((ps, key) => {
+                  // console.log(ps)
                   return (
                     <Comment
                       key={ps.id}
@@ -230,6 +263,12 @@ class Post extends React.Component {
                       // embedded_likes_count= {ps.embedded_likes_count}
                       id={ps.id}
                       text={ps.text}
+                      liked={ps.liked}
+                      author={ps.author_name}
+                      likes={ps.embedded_likes_count}
+                      pub_date={ps.pub_date}
+                      getComments={this.getComments}
+                      post={ps.post}
                     />
                   );
                 })}
@@ -238,9 +277,11 @@ class Post extends React.Component {
                     placeholder="comment"
                     aria-label="comment"
                     aria-describedby="basic-addon2"
+                    onChange={(ev)=>{this.setState({commtxt: ev.target.value})}}
+                    value={this.state.commtxt}
                   />
                   <Button variant="outline-secondary" id="button-addon2" onClick={(event) => {
-                    this.creatComment(event.target.value)
+                    this.createComment(event.target.value)
                   }}>
                     Send
                   </Button>
