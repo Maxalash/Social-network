@@ -18,16 +18,6 @@ class UserList(generics.ListAPIView):
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend, filters.SearchFilter]
     # filterset_fields = ['username']
     search_fields = ['^username']
-    # def get_queryset(self):
-    #     """
-    #     This view should return a list of all the purchases for
-    #     the user as determined by the username portion of the URL.
-    #     """
-    #     username = self.kwargs['username']
-    #     if username:
-    #         return User.objects.filter(username=username)
-    #     else:
-    #         return User.objects.filter()
 
 @api_view(['GET'])
 @permission_classes((permissions.IsAuthenticated,))

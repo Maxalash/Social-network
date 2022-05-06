@@ -43,14 +43,6 @@ class MessageLoadSerializer(serializers.ModelSerializer):
         messages = Message.objects.filter(chat=obj)
         return MessageSerializer(messages,many = True).data
 
-# class UsernameField(serializers.RelatedField):
-#     def to_representation(self, obj):
-#         user = None
-#         request = self.context.get("request")
-#         if request and hasattr(request, "user"):
-#             user = request.user
-#         if obj.user != user:
-#             return user
 
 
 class ChatSerializer(serializers.ModelSerializer):
@@ -60,16 +52,11 @@ class ChatSerializer(serializers.ModelSerializer):
         read_only=True,
         slug_field='username'
     )
-    # user = UsernameField(many=True)
 
     class Meta:
         model = Chat
         fields = '__all__'
     def get_friend(self,obj):
-
-        # print(obj.user)
-        # for i in obj.user:
-        #     print(i)
         return str(obj.user)
 
 class CreateChatSerializer(serializers.ModelSerializer):
