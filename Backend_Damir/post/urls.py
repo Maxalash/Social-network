@@ -8,7 +8,7 @@ urlpatterns = (
     path('author_posts/<int:pk>', views.author_posts), # get author posts
     path('post_comments/<int:pk>', views.post_comments), # get post comments
     path('all_posts/', views.all_posts), # get all posts
-    path('own_posts/', views.own_posts), # get all posts
+    path('own_posts/', views.own_posts), # get own posts
     path('bookmarked_posts/', views.bookmarked_posts), # get bookmarked posts
 
     path('make_post/', views.make_post), # make post

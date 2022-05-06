@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import viewsets, permissions, generics
 from django.contrib.auth.models import User
 import django_filters
-
+from rest_framework import filters
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('?')
     serializer_class = UserSerializer
@@ -15,18 +15,9 @@ class UserList(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated,]
-    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
-    filterset_fields = ['username']
-    # def get_queryset(self):
-    #     """
-    #     This view should return a list of all the purchases for
-    #     the user as determined by the username portion of the URL.
-    #     """
-    #     username = self.kwargs['username']
-    #     if username:
-    #         return User.objects.filter(username=username)
-    #     else:
-    #         return User.objects.filter()
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend, filters.SearchFilter]
+    # filterset_fields = ['username']
+    search_fields = ['^username']
 
 @api_view(['GET'])
 @permission_classes((permissions.IsAuthenticated,))
