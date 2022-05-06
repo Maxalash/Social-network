@@ -22,12 +22,13 @@ class Myprofile extends React.Component {
     super(props);
     this.state = {
       posts: [],
-      friends: []
-
+      chats: null
     };
     this.friendsref = React.createRef()
     this.postref = React.createRef()
     this.addClasses = this.addClasses.bind(this)
+    this.loadChats = this.loadChats.bind(this)
+    this.rvclass = this.rvclass.bind(this)
   }
 
   // getPosts() {
@@ -58,7 +59,7 @@ class Myprofile extends React.Component {
 
   // }
   componentDidMount() {
-    this.addClasses()
+    this.loadChats()
   }
   getFriends() {
     const toke = cookieGet()
@@ -104,20 +105,107 @@ class Myprofile extends React.Component {
     }
   }
 
-  addClasses() {
-    const wlwm = this.friendsref.current.querySelectorAll('.list-group-item');
-    console.log(wlwm)
-    wlwm.forEach((elem) => {
-      console.log(elem)
-      elem.addEventListener("click", function () {
-          const ind = Array.from(wlwm).indexOf(elem)
-          console.log(ind)
-          const chatwd = document.querySelectorAll('.chatwindow')[ind]
-          chatwd.style.display = 'block'
-          // elem2.style.display = 'block'
-          // this.friendsref.current.children[0].style.display = 'none'
-      })
+  addClasses(e) {
+    const elem = e.target;
+    const prnt = elem.parentNode;
+    const grand = prnt.parentNode;
+    console.log(prnt.children[2])
+    const sibls = []
+    let sibl = grand.firstElementChild;
+    do {
+      if (sibl != prnt) {
+        sibls.push(sibl);
+      }
+    } while (sibl = sibl.nextElementSibling);
+
+    sibls.forEach((el) => {
+      el.style.display = 'none'
     })
+
+    prnt.children[2].style.display = "block"
+    prnt.children[0].style.display = "inline-block"
+  }
+  rvclass(e){
+    const elem = e.target;
+    const prnt = elem.parentNode;
+    const grand = prnt.parentNode;
+    const sibls = []
+    let sibl = grand.firstElementChild;
+    do {
+      if (sibl != prnt) {
+        sibls.push(sibl);
+      }
+    } while (sibl = sibl.nextElementSibling);
+
+    sibls.forEach((el) => {
+      el.style.display = 'block'
+    })
+
+    prnt.children[2].style.display = "none"
+    prnt.children[0].style.display = "none"
+
+  }
+
+  // const btns = this.friendsref.current.querySelectorAll('.btn-close');
+  // console.log(btns)
+  // btns.forEach((elem) => {
+  //   elem.addEventListener("click", function () {
+  //     const ind = Array.from(btns).indexOf(elem)
+  //     const chatwd = document.querySelectorAll('.chatwindow')[ind]
+  //     console.log(chatwd);
+  //     chatwd.style.display = 'none';
+  //     const sibls = []
+  //     let sibl = elem.parentNode.parentNode.firstElementChild;
+  //     do {
+  //       if (sibl != elem) {
+  //         sibls.push(sibl);
+  //       }
+  //     } while (sibl = sibl.nextElementSibling);
+
+  //     sibls.forEach((el) => {
+  //       el.style.display = 'block'
+  //     })
+  //     elem.style.display = 'none';
+
+
+  //   })
+  // })
+
+  loadChats() {
+    let url = 'http://localhost:8000/chat/load_chats/';
+    const toke = cookieGet()
+    axios.get(url, {
+      headers: {
+        'content-type': 'multipart/form-data',
+        'Authorization': 'Token ' + toke
+      }
+    })
+      .then(res => {
+        var string1 = JSON.stringify(res.data);
+        var data = JSON.parse(string1);
+        let chats = [];
+        data.map((getts) => {
+          var message_dat = {
+            id: getts.id,
+            friend: getts.friend,
+            user: getts.user,
+            created_date: getts.created_date
+          };//send_date: data.send_date, owner: data.owner, chat: data.chat
+          // console.log(message)
+          chats.push(message_dat);
+        });
+        this.setState(
+          {
+            chats
+          }
+          // , function () {
+          //   console.log('chats loaded')
+          //   console.log(this.state.chats)
+          // }
+        );
+        // console.log(this.state.messages);
+      })
+      .catch(err => console.log(err))
   }
 
   render() {
@@ -143,20 +231,21 @@ class Myprofile extends React.Component {
         <main>
           <section id="friends" className="friend-list" ref={this.friendsref}>
 
-            <ListGroup >
-              {this.state.friends?.map((ps, key) => {
-                console.log(ps)
+            <ListGroup id="friendsList">
+              {this.state.chats?.map((ps, key) => {
                 return (
-                  <ListGroup.Item></ListGroup.Item>
+                  <ListGroup.Item key={ps.id}>
+                    <button type="button" className="btn-close" aria-label="Close" onClick={(ev)=>{this.rvclass(ev)}}/>
+                    <div style={{ display: 'inline-block', width: '90%' }} onClick={(ev) => { this.addClasses(ev) }}>
+                      {ps.friend}
+                    </div>
+                    <Chat
+                      id={ps.id}
+                    />
+                  </ListGroup.Item>
                 )
               })}
-
-              <ListGroup.Item>Friend</ListGroup.Item>
-              <ListGroup.Item>Morbi leo risus</ListGroup.Item>
-              <ListGroup.Item>Porta ac consectetur ac</ListGroup.Item>
-              <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
             </ListGroup>
-            <Chat/>
           </section>
           <section id="post" ref={this.postref}>
             <Post

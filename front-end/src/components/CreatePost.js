@@ -19,7 +19,7 @@ class CreatePost extends React.Component {
     this.state = {
       title: "",
       text: "",
-      images: [],
+      images: null,
       video: [],
       audio: []
     }
@@ -31,13 +31,7 @@ class CreatePost extends React.Component {
     event.preventDefault()
     this.props.closen()
     let form_data = new FormData();
-    // if (this.state.images.length > 0) {
-    
-      for (let i = 0 ; i < this.state.images.length ; i++) {
-        console.log(this.state.images[i])
-        form_data.append("images", this.state.images[i]);
-    // }
-    }
+    form_data.append('image', this.state.images);
     if (this.state.video.length > 0) form_data.append('video', this.state.video, this.state.video.name);
     if (this.state.audio.length > 0) form_data.append('audio', this.state.audio, this.state.audio.name);
     form_data.append('title', this.state.title);
@@ -74,17 +68,17 @@ class CreatePost extends React.Component {
 
   handleImageUpload(event) {
     event.preventDefault()
-    let images1 = event.target.files;
-    let filesim = [...this.state.images]
-    console.log(images1)
-    for (let i = 0; i < images1.length; i++) {
+    // let images1 = event.target.files;
+    // let filesim = [...this.state.images]
+    // console.log(images1)
+    // for (let i = 0; i < images1.length; i++) {
       
-      filesim.push(images1[i])
-    }
-    console.log(filesim)
+    //   filesim.push(images1[i])
+    // }
+    // console.log(filesim)
 
-    this.setState({ images: [...filesim]});
-    console.log([...filesim])
+    this.setState({ images: event.target.files[0]});
+    // console.log([...filesim])
     console.log(this.state.images)
 
 

@@ -1,141 +1,145 @@
-import React, { Component} from 'react';
+import React, { Component } from 'react';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 // import SimpleBar from 'simplebar-react';
-import 'simplebar/dist/simplebar.min.css';
 import "./Myprofile.css";
 import axios from "axios";
 import Cookies from 'universal-cookie';
 
-import "./style.css";
+// import "./style.css";
 
 // let id = 0;
 
 const cookie = new Cookies()
 
-function cookieIdGet(){
-    const gid = cookie.get('id');
-    // console.log(typeof gid +" "+gid)
-    return gid;
+function cookieIdGet() {
+  const gid = cookie.get('id');
+  // console.log(typeof gid +" "+gid)
+  return gid;
 }
 
-function cookieGet(){
-    return cookie.get('token');
+function cookieGet() {
+  return cookie.get('token');
 }
 
 
-const client = new W3CWebSocket('ws://127.0.0.1:8000/ws/chat/1/',['Token', cookieGet()]);
 
 
 
 
 class Chat extends Component {
   chatContainer = React.createRef();
-
   state = {
-    id:null,
-    messages: [],
+    id: this.props.id,
+    messages: null,
     value: ""
   };
-  loadMessages(){
-    let url = 'http://localhost:8000/chat/load_messages/1';
+  client = new W3CWebSocket('ws://127.0.0.1:8000/ws/chat/'+this.state.id+'/', ['Token', cookieGet()]);
+  chat_id=this.state.id
+  loadMessages() {
+    let url = 'http://localhost:8000/chat/load_messages/'+this.state.id;
+    
+    console.log(url)
     const toke = cookieGet()
     axios.get(url, {
       headers: {
         'content-type': 'multipart/form-data',
-        'Authorization':'Token ' + toke
+        'Authorization': 'Token ' + toke
       }
     })
-        .then(res => {
-            var string1 = JSON.stringify(res.data);
-            var data = JSON.parse(string1);
-            let messages = [...this.state.messages];
-            data['messages'].map((getts)=>{
-              let curid;
-              if(getts.yours){
-                curid=data['session_id']
-              }else{
-                curid=data['session_id']+1
-              }
-                var message_dat = {
-                    id: getts.id,
-                    chat_id: getts.chat,
-                    text: getts.text,
-                    send_date: getts.send_date,
-                    user_id: curid,
-                    username: getts.owner
-                };//send_date: data.send_date, owner: data.owner, chat: data.chat
-                // console.log(message)
-                messages.push(message_dat);
-            });
-            this.setState({id: data['session_id']})
-            console.log(data['session_id'])
-            this.setState(
-                {
-                  messages
-                },
-                () => this.scrollToMyRef()
-              );
-            // console.log(this.state.messages);
-        })
-        .catch(err => console.log(err))
-}
-componentDidMount(){
-    // const roomName = location.pathname.substr(1);
-    this.loadMessages()
-  
-    client.onopen = (e) =>{
-        console.log("Connected")
-    }
-    
-    client.onmessage = (e) => {
-        // console.log(JSON.parse(e.data))
-        var data = JSON.parse(e.data);
-        var message_dat = {
-            id: data.message_id,
-            chat_id: data.chat_id,
-            text: data.message,
-            send_date: data.send_date,
-            user_id: data.session_id,
-            username: data.username
-        };//send_date: data.send_date, owner: data.owner, chat: data.chat
-        console.log(data.session_id)
-        let messages = [...this.state.messages];
-        messages.push(message_dat);
+      .then(res => {
+        var string1 = JSON.stringify(res.data);
+        var data = JSON.parse(string1);
+        let messages = [];
+        data['messages'].map((getts) => {
+          var message_dat = {
+            id: getts.id,
+            chat_id: getts.chat,
+            text: getts.text,
+            send_date: getts.send_date,
+            yours: getts.yours,
+            username: getts.owner
+          };//send_date: data.send_date, owner: data.owner, chat: data.chat
+          // console.log(message)
+          messages.push(message_dat);
+        });
         this.setState(
-            {
-              messages
-            },
-            () => this.scrollToMyRef()
-          );
-        // console.log(this.state.messages)
-        this.scrollToMyRef();
+          {
+            messages
+          },
+          () => this.scrollToMyRef()
+        );
+        // console.log(this.state.messages);
+      })
+      .catch(err => console.log(err))
+  }
+  componentDidMount() {
+    this.loadMessages()
+    this.client.onopen = (e) => {
+      console.log("Connected")
+    }
+
+    this.client.onmessage = (e) => {
+      // console.log(JSON.parse(e.data))
+      var data = JSON.parse(e.data);
+      console.log(data)
+      var message_dat = {
+        id: data.message_id,
+        chat_id: data.chat_id,
+        text: data.message,
+        send_date: data.send_date,
+        yours: data.yours,
+        username: data.username
+      };//send_date: data.send_date, owner: data.owner, chat: data.chat
+
+      let messages = [...this.state.messages];
+      messages.push(message_dat);
+      this.setState(
+        {
+          messages
+        },
+        () => this.scrollToMyRef()
+        , function () {
+          console.log(this.state.value);
+        }
+      );
+      // console.log(this.state.messages)
     };
 
-    client.onclose = (e) => {
-        console.error('Chat socket closed unexpectedly');
+    this.client.onclose = (e) => {
+      console.error('Chat socket closed unexpectedly');
     };
 
     document.querySelector('#chat-message-input').focus();
-// document.querySelector('#chat-message-input').onkeyup = (e) => {
-//     this.clickSubmitMessage
-// };
+    // document.querySelector('#chat-message-input').onkeyup = (e) => {
+    //     this.clickSubmitMessage
+    // };
 
     document.querySelector('#chat-message-submit').onclick = (e) => {
-        var messageInputDom = document.querySelector('#chat-message-input');
-        var message = messageInputDom.value;
-        
-        if (message) client.send(JSON.stringify({
+      var messageInputDom = document.querySelector('#chat-message-input');
+      var message = messageInputDom.value;
+      console.log(this.chat_id)
+      if (message) this.client.send(JSON.stringify({
 
-                        // 'id':(this.state.id ? this.state.id: ''),
-                        'message': message
-        }));
-        messageInputDom.value = '';
-        this.scrollToMyRef()
-        // this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
+        // 'id':(this.state.id ? this.state.id: ''),
+        'chat_id': 2,
+        'message': message
+      }));
+      // this.setState({value: ""})
+      this.scrollToMyRef()
+      // this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
     };
-    
+
     // this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
-}
+  }
+  // async addMessage(messages){
+  //   await this.setState(
+  //     {
+  //       messages
+  //     }
+  //     ,() => this.scrollToMyRef()
+  //   );
+  //   console.log(this.state.messages)
+  // }
 
   handleChange = ({ target: { value } }) => {
     this.setState({
@@ -149,16 +153,16 @@ componentDidMount(){
   //   return (ids-1);
   // }
 
-//   sendMessage = () => {
-//     let messages = [...this.state.messages, this.state.value];
+  //   sendMessage = () => {
+  //     let messages = [...this.state.messages, this.state.value];
 
-//     this.setState(
-//       {
-//         messages
-//       },
-//       () => this.scrollToMyRef()
-//     );
-//   };
+  //     this.setState(
+  //       {
+  //         messages
+  //       },
+  //       () => this.scrollToMyRef()
+  //     );
+  //   };
 
   scrollToMyRef = () => {
     const scroll =
@@ -171,24 +175,34 @@ componentDidMount(){
     return (
       <div className="chatwindow">
         <div ref={this.chatContainer} className="chatdatascroller">
-        {this.state.messages?.map((txs, index)=>{
-                //   console.log(txs.user_id+" "+this.state.id+" "+(txs.user_id==this.state.id))
-              if(txs.user_id==this.state.id){
-                return <div key={txs.id} className="sendedmessage">
-                <p className='sent_date sent'>{txs.send_date}</p><br /><p>{txs.text}</p></div>
-              }else{
-                return <div key={txs.id} className="receivedmessage"><p className='sent_date sent'>{txs.username}</p>
-                <p className='sent_date sent'>{txs.send_date}</p><br /><p>{txs.text}</p></div>
-             }
-        })}
+
+          {this.state.messages?.map((txs, index) => {
+            // console.log(txs.user_id+" "+this.state.id+" "+(txs.user_id==this.state.id))
+            if (txs.yours) {
+              return (<div key={txs.id} className="sendedmessage">
+                <p className='name_date'>
+                  {txs.send_date.substr(11)}
+                </p><br />
+                <div className='msgtxt'>{txs.text}</div>
+              </div>)
+            } else {
+              return (<div key={txs.id} className="receivedmessage">
+                <p className='name_date'>
+                  {txs.username}
+                </p>
+                <p className='date_date'>{txs.send_date.substr(11)}</p><br />
+                <div className='msgtxt'>{txs.text}</div>
+              </div>)
+            }
+          })}
         </div>
 
         {/* <input value={this.state.value} onChange={this.handleChange} />
         <button onClick={this.sendMessage}>SEND</button> */}
-        <form className = "messaging" >
-              <textarea className = "chatting" name="chatting" id="chat-message-input" placeholder="message..." value={this.state.value} onChange={this.handleChange}  autoFocus></textarea>
-              <button id="chat-message-submit" type = 'button' className = "sendmessage" >Send</button>
-          </form>
+        <form className="messaging" >
+          <textarea className="chatting" name="chatting" id="chat-message-input" placeholder="message..." value={this.state.value} onChange={this.handleChange} autoFocus></textarea>
+          <button id="chat-message-submit" type='button' className="sendmessage" >Send</button>
+        </form>
       </div>
     );
   }

@@ -2,7 +2,7 @@
 .postscontain{
     min-height: 754px;
     max-width: 600px;
-    margin: 0 auto;
+    margin: 58px auto 0;
     justify-content: center;
 }
 .createpost{

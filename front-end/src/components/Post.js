@@ -75,7 +75,7 @@ class Post extends React.Component {
       })
       .then(data => {
         this.setState({ likes: data['Liked'] })
-        this.setState({ likenum: data['likes_count']})
+        this.setState({ likenum: data['likes_count'] })
         // let num = parseInt(this.state.likenum)
         // if (data['liked']) num = num+1
         // else num = num-1
