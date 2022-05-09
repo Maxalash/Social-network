@@ -7,17 +7,6 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = '__all__'
 
-class UsernameSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['username']
-
-
-class UserPasswordSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['password']
-
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
@@ -55,7 +44,7 @@ class PostSerializer(serializers.ModelSerializer):
     liked = serializers.SerializerMethodField()
     bookmarked = serializers.SerializerMethodField()
     author_name = serializers.SerializerMethodField()
-
+    yours = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
@@ -95,17 +84,24 @@ class PostSerializer(serializers.ModelSerializer):
     def get_author_name(self,obj):
         return str(obj.author)
 
+    def get_yours(self, obj):
+        user = None
+        request = self.context.get("request")
+        if request and hasattr(request, "user"):
+            user = request.user
+        return True if user == obj.owner else False
+
 class CommentSerializer(serializers.ModelSerializer):
     likes_count = serializers.SerializerMethodField()
     liked = serializers.SerializerMethodField()
     author_name = serializers.SerializerMethodField()
+    yours = serializers.SerializerMethodField()
 
     class Meta:
         model = Comment
         fields = '__all__'
 
     def get_author_name(self, obj):
-        print(str(obj.owner))
         return str(obj.owner)
 
     def get_likes_count(self, obj):
@@ -118,6 +114,13 @@ class CommentSerializer(serializers.ModelSerializer):
             user = request.user
         like = CommentLike.objects.filter(comment=obj, user=user)
         return True if like else False
+
+    def get_yours(self,obj):
+        user = None
+        request = self.context.get("request")
+        if request and hasattr(request, "user"):
+            user = request.user
+        return True if user == obj.owner else False
 
 class BookmarkSerializer(serializers.ModelSerializer):
     post = PostSerializer()

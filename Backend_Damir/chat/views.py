@@ -30,9 +30,8 @@ def load_chats(request):
 @permission_classes((permissions.IsAuthenticated,))
 def load_messages(request,pk):
     messages = Message.objects.filter(chat_id=pk).order_by('send_date')
-    session, cond = Session.objects.get_or_create(user=request.user, chat_id=pk)
     data = MessageSerializer(messages, many=True, context={'request': request}).data
-    return Response({'messages':data,"session_id":session.id})
+    return Response({'messages':data})
 
 
 @api_view(['POST'])
