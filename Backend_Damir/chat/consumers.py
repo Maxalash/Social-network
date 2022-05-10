@@ -5,7 +5,6 @@ from channels.generic.websocket import WebsocketConsumer
 import json
 from .serializer import MessageSendSerializer, MessageSerializer
 from rest_framework.authtoken.models import Token
-from .models import Session
 
 
 class ChatConsumer(WebsocketConsumer):
@@ -33,9 +32,7 @@ class ChatConsumer(WebsocketConsumer):
         text_data_json = json.loads(text_data)
         print(text_data_json)
         message = text_data_json['message']
-        chat_id = text_data_json['chat_id']
-        data = {'text': message, 'chat': chat_id, 'owner': self.client.id}
-        session, cond = Session.objects.get_or_create(user=self.client, chat_id=self.chat_id)
+        data = {'text': message, 'chat': self.chat_id, 'owner': self.client.id}
 
         serializer = MessageSendSerializer(data=data)
         if serializer.is_valid():
@@ -44,7 +41,6 @@ class ChatConsumer(WebsocketConsumer):
         else:
             print(serializer.errors)
         user_id = data['owner']
-        print('saved user id ',user_id)
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             {
@@ -52,9 +48,7 @@ class ChatConsumer(WebsocketConsumer):
                 'message': data['text'],
                 'send_date': data['send_date'],
                 'message_id': data['id'],
-                'session_id': session.id,
-                'message_owner': user_id,
-                'chat_id': chat_id
+                'message_owner': user_id
             }
         )
 
@@ -62,11 +56,9 @@ class ChatConsumer(WebsocketConsumer):
         message = event['message']
         send_date = event['send_date']
         message_id = event['message_id']
-        session_id = event['session_id']
         mes_owner = event['message_owner']
         chat_id = event['chat_id']
         yours = True if mes_owner == str(self.client) else False
-        print(yours)
         self.send(text_data=json.dumps({
             'event': "Send",
             'message': message,
@@ -74,6 +66,5 @@ class ChatConsumer(WebsocketConsumer):
             'username': self.client.username,
             'send_date': send_date,
             'message_id': message_id,
-            'session_id': session_id,
             'yours': yours
         }))

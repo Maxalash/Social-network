@@ -34,14 +34,14 @@ def register(request):
 @permission_classes((permissions.IsAuthenticated,))
 def author_posts(request, pk):
     posts = Post.objects.filter(author_id=pk)
-    data = PostSerializer(posts, many=True).data
+    data = PostSerializer(posts, many=True, context={'request': request}).data
     return Response(data)
 
 @api_view(['GET'])
 @permission_classes((permissions.IsAuthenticated,))
 def own_posts(request):
     posts = Post.objects.filter(author=request.user)
-    data = PostSerializer(posts, many=True).data
+    data = PostSerializer(posts, many=True, context={'request': request}).data
     return Response(data)
 
 @api_view(['GET'])
@@ -63,7 +63,7 @@ def all_posts(request):
 @permission_classes((permissions.IsAuthenticated,))
 def bookmarked_posts(request):
     posts = request.user.bookmark_set.all()
-    data = BookmarkSerializer(posts, many=True).data
+    data = BookmarkSerializer(posts, many=True, context={'request': request}).data
     return Response(data)
 
 
