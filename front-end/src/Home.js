@@ -56,13 +56,16 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            posts:[],
-            crshow: false
+            posts:[]
             // status: checkSession()
         };
         this.getPosts = this.getPosts.bind(this);
+        this.opencrPost = this.opencrPost.bind(this);
+        this.checkLog();
+      }
+      componentDidMount(){
         this.getPosts();
-        this.checkLog()
+
       }
    
       
@@ -113,17 +116,21 @@ class Home extends React.Component {
     //         title= {ps['title']}
     //     />);
     // }
-
+    opencrPost(e){
+        // console.log(e.target.nextSibling)
+        e.target.nextSibling.style.display = 'block'
+    }
     
     
 
     render(){
         return (
             <div className = "body">
-                <Header />
+                <Header currloc='home'/>
                 <div className='postscontain'>
-                <button className='createpost' onClick={(e)=>{this.setState({crshow:true})}}>Create POST</button><br />
-                {this.state.crshow === true ? <CreatePost updatepost = {this.getPosts} closen = {(e)=>{this.setState({crshow:false})}}/>:""}
+                <button className='createpost' onClick={(e)=>{this.opencrPost(e)}}>Create POST</button>
+                <CreatePost updatepost = {this.getPosts} closen = {(e)=>{this.setState({crshow:false})}}/><br />
+
                 {this.state.posts?.map((ps, key) => {
                     // console.log(ps)
                     return (
@@ -141,6 +148,7 @@ class Home extends React.Component {
                             likes_count ={ps.embedded_likes_count}
                             bookmarked = {ps.bookmarked}
                             updpost = {this.getPosts}
+                            currloc='home'
                         />  
                     )})}
                 {/* <Listposts data={this.state.posts}/> */}

@@ -1,4 +1,5 @@
 import React from "react";
+import './Post.css'
 import {
   Form, Button, FloatingLabel,
   Modal,
@@ -18,11 +19,11 @@ class CreatePost extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: this.props.id,
       title: this.props.title,
       text: this.props.text
     }
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.closeEdit = this.closeEdit.bind(this)
   }
 
 
@@ -41,32 +42,38 @@ class CreatePost extends React.Component {
         text: this.state.text
       })
     };
-    console.log(requestOptions)
-    fetch('http://127.0.0.1:8000/post/edit_post/' + this.state.id + "/", requestOptions)
+    // console.log(requestOptions)
+    fetch('http://127.0.0.1:8000/post/edit_post/' + this.props.id + "/", requestOptions)
       .then(res => {
         return res.json();
       })
       .then(data => {
         var tooken = data
         // this.props.history.push('/')
-        console.log(tooken)
+        // console.log(tooken)
+        this.closeEdit(event)
+        this.props.getposts(tooken)
       })
   }
-
+  closeEdit(e){
+    const main=e.target.parentNode.parentNode.parentNode.parentNode.parentNode
+    main.style.display = 'none'
+    document.body.style.overflow ='scroll'
+  }
 
 
   render() {
     return (
-
-      <Modal.Dialog >
+      <div className="blur-screen">
+        <Modal.Dialog >
         <Modal.Header >
           <Modal.Title>Edit post</Modal.Title>
         </Modal.Header>
-        <Form onSubmit={(event) => this.handleSubmit(event)}>
+        <Form >
           <Form.Group className="mb-3 m-3">
-            <Form.Control type="file" placeholder="upload images" onChange={(event) => {
+            {/* <Form.Control type="file" placeholder="upload images" onChange={(event) => {
               this.setState({ image: event.target.files[0] })
-            }}></Form.Control><br />
+            }}></Form.Control><br /> */}
             <Form.Control type="text" placeholder="Title" value={this.state.title} onChange={(event) => {
               this.setState({ title: event.target.value })
             }} /><br />
@@ -88,12 +95,15 @@ class CreatePost extends React.Component {
                   </FloatingLabel> */}
           </Form.Group>
           <Modal.Footer>
-            <Button variant="secondary">Close</Button>
-            <Button variant="primary" type="submit">Edit</Button>
+            <Button variant="secondary" onClick={(e)=>{this.closeEdit(e)}}>Close</Button>
+            <Button variant="primary" type="submit" onClick={(e)=>{this.handleSubmit(e)}}>Edit</Button>
           </Modal.Footer>
         </Form>
 
       </Modal.Dialog>
+      </div>
+
+      
       // <div>
       //     <Button variant="primary" onClick={this.setState({show:"true"})}>
       //         Launch static backdrop modal

@@ -8,6 +8,7 @@ import { BrowserRouter,
 } from 'react-router-dom';
 import Login from "./Login";
 import Register from "./Register";
+import Search from "./components/Search";
 
 import CreatePost from './components/CreatePost';
 // import Comment from './components/Comment';
@@ -23,6 +24,8 @@ root.render(
       <Route path="register" element={<Register />} />
       <Route path="myprofile" element = {<Myprofile />} />
       <Route path="createpost" element = {<CreatePost />} />
+      
+      <Route path="search" element = {<Search />} />
     </Routes>
   </BrowserRouter>
   );

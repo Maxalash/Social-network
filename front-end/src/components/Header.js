@@ -1,58 +1,59 @@
 import { useState, useEffect, React } from 'react';
-import {Navbar, Container, Nav, NavDropdown, Navlink, NavLink} from 'react-bootstrap';
+import { Navbar, Container, Nav, NavDropdown, Navlink, NavLink } from 'react-bootstrap';
 import "./Header.css"
 import {
-    BrowserRouter,
-    Navigate,
-    Routes,
-    Router,
-    Route,
-    Link, 
-    NavLink as NavLink2
+  BrowserRouter,
+  Navigate,
+  Routes,
+  Router,
+  Route,
+  Link,
+  NavLink as NavLink2
 } from "react-router-dom";
+import Search from "./Search";
 
 import Cookies from 'universal-cookie';
 const cookie = new Cookies()
 
-function logout(){
+function logout() {
   cookie.remove('token')
   window.location.reload();
 }
 
-function cookieGet(){
+function cookieGet() {
   return cookie.get('token');
 }
 
-function checkSession(){
+function checkSession() {
   var toke = cookieGet('token')
   const requestOptions = {
-      method:'GET',
-      headers: { 
-          'Content-Type': 'application/json',
-          'Authorization':'Token '+toke
-      }
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Token ' + toke
+    }
   };
   fetch('http://127.0.0.1:8000/post/posts/', requestOptions)
-  .then(res => {
+    .then(res => {
       console.log(res.ok)
-      if(res.ok) {
-          return res.ok;
+      if (res.ok) {
+        return res.ok;
       }
       // else{
       //     <Navigate to="/login" ></Navigate>
       // }
-      throw new Error('Network response was not ok.'+res.ok);
+      throw new Error('Network response was not ok.' + res.ok);
     })
-    .catch(function(error) {
-      console.log('There has been a problem with your fetch operation: ', 
-      error.message);
-     });
+    .catch(function (error) {
+      console.log('There has been a problem with your fetch operation: ',
+        error.message);
+    });
 }
 
-const Navdrop = ()=>{
-  return(
+const Navdrop = () => {
+  return (
     <Nav className="justify-content-end" >
-      <NavDropdown title="My pfofile" id='basic-nav-dropdown'>
+      <NavDropdown title="My profile" id='basic-nav-dropdown'>
         <NavDropdown.Item href="/myprofile">My profile</NavDropdown.Item>
         <NavDropdown.Divider />
         <NavDropdown.Item onClick={() => logout("Polo Ralph Lauren")}>Log out</NavDropdown.Item>
@@ -61,50 +62,64 @@ const Navdrop = ()=>{
   )
 }
 
-const Navln = ()=>{
-  return(
+const Navln = () => {
+  return (
     <Nav className="justify-content-end" >
       <NavLink className="navbar-item"
-                activeclassname="is-active"
-                href="/login"
-                exact = "true"
-                >Log in</NavLink>
+        activeclassname="is-active"
+        href="/login"
+        exact="true"
+      >Log in</NavLink>
       <NavLink className="navbar-item"
-                activeclassame="is-active"
-                href="/register"
-                exact = "true">Register</NavLink>
+        activeclassame="is-active"
+        href="/register"
+        exact="true">Register</NavLink>
     </Nav>
   )
 }
 
-const Header = () =>{
-  return(
+
+
+const Header = (props) => {
+  const loading = (n)=>{
+    // console.log('2 phase'+n)
+    if(props.loadthem) props.loadthem(n)
+  }
+  return (
     <Navbar expand="lg">
-                  <Container>
-                    <Navbar.Brand href="/">Nigma Galaxy</Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">
-                      <Nav className="me-auto">
-                      <Nav.Link to="/" >
-                        Home
-                      </Nav.Link>
-                        <Nav.Link href="#">About us</Nav.Link>
-                        {/* <Link to="/invoices">Invoices</Link> |{" "}
+      <Container>
+        <Navbar.Brand href="/">Nigma Galaxy</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav 
+          className="me-5"
+          >
+            <Nav.Link to="/" >
+              Home
+            </Nav.Link>
+            <Nav.Link href="#">About us</Nav.Link>
+            {/* <Link to="/invoices">Invoices</Link> |{" "}
                         <Link to="/expenses">Expenses</Link> */}
-                        {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+            {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                           <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                           <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
                           <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
                           <NavDropdown.Divider />
                           <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
                         </NavDropdown> */}
-                      </Nav>
-                      
-                        {cookieGet() === undefined ? <Navln />:<Navdrop />}
-                        
-                    </Navbar.Collapse>
-                  </Container>
-                </Navbar>
+          </Nav>
+          <Nav className='justify-content-start flex-grow-1 me-5' justify>
+          {props.currloc == 'myprofile' ? <Search loadthem={loading}/> : ''}
+          </Nav>
+
+            
+
+
+          {cookieGet() === undefined ? <Navln /> : <Navdrop />}
+
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 }
 

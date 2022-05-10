@@ -147,8 +147,8 @@ class Comment extends React.Component {
           />
           <ButtonGroup className="justify-content-end">
             <Row>
-              <Col xs md="5"><Button variant="secondary" onClick={(ev) => { this.closeEdit(ev); this.setState({text:this.props.text}) }}>Close</Button></Col>
-              <Col xs md="5"><Button variant="primary" type="submit" onClick={(ev) => { this.closeEdit(ev); this.editComment(ev) }}>Edit</Button></Col>
+              <Col xs md="5"><Button  onClick={(ev) => { this.closeEdit(ev); this.setState({text:this.props.text}) }}>Close</Button></Col>
+              <Col xs md="5"><Button  type="submit" onClick={(ev) => { this.closeEdit(ev); this.editComment(ev) }}>Edit</Button></Col>
             </Row>
           </ButtonGroup>
         </Form.Group>

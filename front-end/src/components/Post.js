@@ -22,23 +22,30 @@ class Post extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      show: false,
+      // show: false,
+      currloc:'',
       bkmark: this.props.bookmarked,
       likes: this.props.liked,
       likenum: this.props.likes_count,
       comments: [],
-      commtxt:''
+      commtxt: ''
     }
-    // console.log(this.props.liked)
-    this.sendId = this.sendId.bind(this);
-    this.showmod = this.showmod.bind(this);
+    // console.log(this.props.liked)\
+    // this.showmod = this.showmod.bind(this);
     this.bookmrk = this.bookmrk.bind(this);
-    this.closemod = this.closemod.bind(this);
+    // this.closemod = this.closemod.bind(this);
     this.getComments = this.getComments.bind(this)
     this.createComment = this.createComment.bind(this)
+    this.handleEdit = this.handleEdit.bind(this)
+    // this.closeEdit = this.closeEdit.bind(this)
+    this.updatePost = this.updatePost.bind(this)
   }
-  componentDidMount(){
+  componentDidMount() {
     this.getComments()
+    
+// if(parts[parts.length - 1] == 'trucks.php') {
+//     location.href = 'some-other-page';
+// }
 
   }
   bookmrk(e) {
@@ -90,22 +97,18 @@ class Post extends React.Component {
         // this.setState({likenum:num})
       });
   }
-  sendId(ev) {
-    ev.preventDefault()
-    console.log(ev.target.value)
-  }
-  showmod(e) {
-    e.preventDefault()
-    this.setState({ show: true })
-  }
-  closemod(e) {
-    e.preventDefault();
-    this.setState({ show: false })
-  }
+  // showmod(e) {
+  //   e.preventDefault()
+  //   this.setState({ show: true })
+  // }
+  // closemod(e) {
+  //   e.preventDefault();
+  //   this.setState({ show: false })
+  // }
 
   getComments(id) {
     let idm
-    this.props? idm=this.props.id:idm=id
+    this.props ? idm = this.props.id : idm = id
     const toke = cookieGet()
     if (toke === null) {
       return []
@@ -154,7 +157,7 @@ class Post extends React.Component {
 
       });
   }
-  createComment(ev){
+  createComment(ev) {
     let form_data = new FormData();
     form_data.append('text', this.state.commtxt)
     form_data.append('post', this.props.id)
@@ -170,15 +173,24 @@ class Post extends React.Component {
         this.getComments()
         console.log(res.status)
         console.log(res)
-        this.setState({commtxt:''})
+        this.setState({ commtxt: '' })
       })
       .catch(err => console.log(err))
 
   }
+  handleEdit(e) {
+    const edit = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode
+    // console.log(edit)
+    edit.previousSibling.style.display = 'block'
+    document.body.style.overflow = 'hidden'
+  }
+  updatePost(data) {
+    this.props.updpost()
+  }
   render() {
     return (
       <div>
-        {this.state.show === true ? <EditPost id={this.props.id} title={this.props.title} text={this.props.text} closemod={this.closemod} /> : ""}
+        <EditPost id={this.props.id} getposts={this.updatePost} title={this.props.title} text={this.props.text} closeEdit={this.closeEdit} />
         <Card >
           <Carousel>
 
@@ -225,11 +237,13 @@ class Post extends React.Component {
               })}
               <Row>
                 <Col>
-                  <ButtonGroup onClick={this.sendId}>
+                {this.props.currloc === 'post' ? (<ButtonGroup >
                     <Row>
-                      <Col xs md="5"><Button value={this.props.id} onClick={(e) => this.showmod(e)}>Edit</Button></Col>
-                      <Col xs md="5"><Button value={this.props.id} onClick={(e) => this.delPost(e)}> Delete</Button></Col></Row>
-                  </ButtonGroup>
+                      <Col xs md="5"><Button value={this.props.id} onClick={(e) => this.handleEdit(e)}>Edit</Button></Col>
+                      <Col xs md="5"><Button value={this.props.id} onClick={(e) => this.delPost(e)}> Delete</Button></Col>
+                    </Row>
+                  </ButtonGroup>) :'' }
+                  
                 </Col>
                 <Col xs lg="2">
                   {this.state.bkmark === true ? <i className="bi bi-bookmark-check-fill" onClick={(e) => this.bookmrk(e)} /> : <i className="bi bi-bookmark" onClick={(e) => this.bookmrk(e)} />}
@@ -277,7 +291,7 @@ class Post extends React.Component {
                     placeholder="comment"
                     aria-label="comment"
                     aria-describedby="basic-addon2"
-                    onChange={(ev)=>{this.setState({commtxt: ev.target.value})}}
+                    onChange={(ev) => { this.setState({ commtxt: ev.target.value }) }}
                     value={this.state.commtxt}
                   />
                   <Button variant="outline-secondary" id="button-addon2" onClick={(event) => {

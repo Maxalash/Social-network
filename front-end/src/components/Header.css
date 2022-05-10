@@ -4,3 +4,24 @@
 .postscontain{
     min-height: 754px;
 }
+
+.list-group{
+    position:absolute;
+    width:inherit;
+}
+.searchbar{
+    justify-self: flex-start;
+    /* align-self: center; */
+    margin-top: 10px;
+    width: 400px;
+}
+
+.btn, .btn-outline-secondary{
+    border-color:blueviolet;
+    color: blueviolet;
+    background-color: white;
+}
+.btn:hover{
+    background-color: #ce72f6;
+    color: blueviolet;
+}

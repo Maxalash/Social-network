@@ -37,7 +37,7 @@ class Chat extends Component {
   loadMessages() {
     let url = 'http://localhost:8000/chat/load_messages/'+ this.props.id;
     
-    console.log(url)
+    // console.log(url)
     const toke = cookieGet()
     axios.get(url, {
       headers: {
