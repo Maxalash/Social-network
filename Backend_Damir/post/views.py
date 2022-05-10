@@ -48,7 +48,7 @@ def own_posts(request):
 @permission_classes((permissions.IsAuthenticated,))
 def post_comments(request, pk):
     comments = Comment.objects.filter(post_id=pk)
-    data = CommentSerializer(comments, many=True).data
+    data = CommentSerializer(comments, many=True, context={'request': request}).data
     return Response(data)
 
 @api_view(['GET'])

@@ -13,7 +13,7 @@ class ChatConsumer(WebsocketConsumer):
     def connect(self):
         self.chat_id = self.scope['url_route']['kwargs']['chat_id']
         self.room_group_name = 'chat_%s' % self.chat_id
-
+        print(self.chat_id)
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name,
             self.channel_name
@@ -31,8 +31,10 @@ class ChatConsumer(WebsocketConsumer):
 
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
+        print(text_data_json)
         message = text_data_json['message']
-        data = {'text': message, 'chat': self.chat_id, 'owner': self.client.id}
+        chat_id = text_data_json['chat_id']
+        data = {'text': message, 'chat': chat_id, 'owner': self.client.id}
         session, cond = Session.objects.get_or_create(user=self.client, chat_id=self.chat_id)
 
         serializer = MessageSendSerializer(data=data)
@@ -51,7 +53,8 @@ class ChatConsumer(WebsocketConsumer):
                 'send_date': data['send_date'],
                 'message_id': data['id'],
                 'session_id': session.id,
-                'message_owner': user_id
+                'message_owner': user_id,
+                'chat_id': chat_id
             }
         )
 
@@ -61,12 +64,13 @@ class ChatConsumer(WebsocketConsumer):
         message_id = event['message_id']
         session_id = event['session_id']
         mes_owner = event['message_owner']
+        chat_id = event['chat_id']
         yours = True if mes_owner == str(self.client) else False
         print(yours)
         self.send(text_data=json.dumps({
             'event': "Send",
             'message': message,
-            'chat_id': int(self.chat_id),
+            'chat_id': int(chat_id),
             'username': self.client.username,
             'send_date': send_date,
             'message_id': message_id,
