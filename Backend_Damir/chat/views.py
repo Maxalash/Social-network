@@ -23,7 +23,7 @@ class UserList(generics.ListAPIView):
 @permission_classes((permissions.IsAuthenticated,))
 def load_chats(request):
     chats = Chat.objects.filter(user=request.user).order_by('-created_date')
-    data = ChatSerializer(chats, many=True).data
+    data = ChatSerializer(chats, many=True, context={'request': request}).data
     return Response(data)
 
 @api_view(['GET'])

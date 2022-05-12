@@ -40,7 +40,7 @@ class ChatConsumer(WebsocketConsumer):
             data = MessageSerializer(self.messager).data
         else:
             print(serializer.errors)
-        user_id = data['owner']
+        user = data['owner']
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             {
@@ -48,7 +48,7 @@ class ChatConsumer(WebsocketConsumer):
                 'message': data['text'],
                 'send_date': data['send_date'],
                 'message_id': data['id'],
-                'message_owner': user_id
+                'message_owner': user
             }
         )
 
@@ -61,7 +61,8 @@ class ChatConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps({
             'event': "Send",
             'message': message,
-            'username': self.client.username,
+            'chat_id': self.chat_id,
+            'username': mes_owner,
             'send_date': send_date,
             'message_id': message_id,
             'yours': yours

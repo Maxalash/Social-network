@@ -40,11 +40,12 @@ class PostSerializer(serializers.ModelSerializer):
     images = serializers.SerializerMethodField()
     videos = serializers.SerializerMethodField()
     audios = serializers.SerializerMethodField()
-    likes_count = serializers.SerializerMethodField()
     liked = serializers.SerializerMethodField()
     bookmarked = serializers.SerializerMethodField()
     author_name = serializers.SerializerMethodField()
     yours = serializers.SerializerMethodField()
+    comments_count = serializers.SerializerMethodField()
+    bookmarks_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
@@ -62,8 +63,11 @@ class PostSerializer(serializers.ModelSerializer):
         audios = obj.postaudio_set.all()
         return PostAudioSerializer(audios,many=True,context=self.context).data if audios else None
 
-    def get_likes_count(self,obj):
-        return obj.likes_count
+    def get_comments_count(self,obj):
+        return obj.comments_count
+
+    def get_bookmarks_count(self,obj):
+        return obj.bookmark_count
 
     def get_liked(self,obj):
         user = None
