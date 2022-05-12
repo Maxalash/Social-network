@@ -14,6 +14,7 @@ class Message(models.Model):
     def save(self, *args, **kwargs):
         if not self.id:
             self.chat.created_date = datetime.now()
+            self.chat.save()
         super().save(*args, **kwargs)
 
 
