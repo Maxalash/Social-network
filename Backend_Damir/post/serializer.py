@@ -89,7 +89,7 @@ class PostSerializer(serializers.ModelSerializer):
         request = self.context.get("request")
         if request and hasattr(request, "user"):
             user = request.user
-        return True if user == obj.owner else False
+        return True if user == obj.author else False
 
 class CommentSerializer(serializers.ModelSerializer):
     likes_count = serializers.SerializerMethodField()

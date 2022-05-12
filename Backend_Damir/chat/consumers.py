@@ -57,12 +57,10 @@ class ChatConsumer(WebsocketConsumer):
         send_date = event['send_date']
         message_id = event['message_id']
         mes_owner = event['message_owner']
-        chat_id = event['chat_id']
         yours = True if mes_owner == str(self.client) else False
         self.send(text_data=json.dumps({
             'event': "Send",
             'message': message,
-            'chat_id': int(chat_id),
             'username': self.client.username,
             'send_date': send_date,
             'message_id': message_id,
