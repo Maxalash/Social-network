@@ -158,8 +158,8 @@ class Comment extends React.Component {
         <Card.Footer>
           <Row className="justify-content-center">
             <Col xs md="6"></Col>
-            <Col lg="2"><Button onClick={(e) => this.editCommentComp(e)}>Edit</Button></Col>
-            <Col lg="2"><Button onClick={(e)=>{this.delComment(e)}}> Delete</Button></Col>
+            <Col lg="2">{this.props.yours===true ? <Button onClick={(e) => this.editCommentComp(e)}>Edit</Button>:''}</Col>
+            <Col lg="2">{this.props.yours===true ? <Button onClick={(e)=>{this.delComment(e)}}> Delete</Button>:''}</Col>
             <Col xs lg="2">
               {this.state.likes === true ? <i className="bi bi-heart-fill " onClick={(e) => this.likes(e)} /> : <i className="bi bi-heart " onClick={(e) => this.likes(e)} />}
               <p>{this.state.likenum}</p>

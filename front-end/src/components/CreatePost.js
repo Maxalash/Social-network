@@ -19,9 +19,9 @@ class CreatePost extends React.Component {
     this.state = {
       title: "",
       text: "",
-      images: null,
-      video: null,
-      audio: null
+      images: [],
+      video: [],
+      audio: []
     }
     this.refs = React.createRef()
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -34,15 +34,15 @@ class CreatePost extends React.Component {
     event.preventDefault()
     this.props.closen()
     let form_data = new FormData();
-    if (this.state.images) form_data.append('image', this.state.images, this.state.images.name);
-    if (this.state.video) form_data.append('audio', this.state.video, this.state.video.name);
-    if (this.state.audio) form_data.append('video', this.state.audio, this.state.audio.name);
+    if (this.state.images !== []) this.state.images.forEach(x => form_data.append('image', x));
+    if (this.state.video !==[]) this.state.video.forEach(x => form_data.append('video', x));
+    if (this.state.audio !==[]) this.state.audio.forEach(x => form_data.append('audio', x));
     // if (this.state.video.length > 0) form_data.append('video', this.state.video, this.state.video.name);
     // if (this.state.audio.length > 0) form_data.append('audio', this.state.audio, this.state.audio.name);
 
     form_data.append('title', this.state.title);
     form_data.append('text', this.state.text);
-    // console.log(form_data)
+    console.log('form_data content:')
     for (var pair of form_data.entries()) {
       console.log(pair[0] + ', ' + pair[1]);
     }
@@ -64,60 +64,39 @@ class CreatePost extends React.Component {
   }
 
   imagesCopy() {
-    if (this.state.images) return 'added'
+    return this.state.images.length
   }
   videosCopy() {
-    if (this.state.video) return 'added'
+    return this.state.video.length
   }
   audioCopy() {
-    if (this.state.audio) return 'added'
+    return this.state.audio.length
   }
 
   handleImageUpload(event) {
     event.preventDefault()
-    // let images1 = event.target.files;
-    // let filesim = [...this.state.images]
-    // console.log(images1)
-    // for (let i = 0; i < images1.length; i++) {
-
-    //   filesim.push(images1[i])
-    // }
-    // console.log(filesim)
-
-    this.setState({ images: event.target.files[0] });
-    // console.log([...filesim])
-    console.log(this.state.images)
+    let filesim = [...this.state.images]
+    Array.from(event.target.files).forEach(x=>filesim.push(x))
+    this.setState({ images: filesim},()=>{
+      // console.log(this.state.images)
+    });
   }
   handleVideoUpload(event) {
     event.preventDefault()
-    // let images1 = event.target.files;
-    // let filesim = [...this.state.images]
-    // console.log(images1)
-    // for (let i = 0; i < images1.length; i++) {
-
-    //   filesim.push(images1[i])
-    // }
-    // console.log(filesim)
-
-    this.setState({ video: event.target.files[0] },
-      () => { console.log(this.state.video) });
-    // console.log([...filesim])
+    let filesim = [...this.state.video]
+    Array.from(event.target.files).forEach(x=>filesim.push(x))
+    this.setState({ video: filesim},()=>{
+      // console.log(this.state.video)
+    });
 
   }
   handleAudioUpload(event) {
     event.preventDefault()
-    // let images1 = event.target.files;
-    // let filesim = [...this.state.images]
-    // console.log(images1)
-    // for (let i = 0; i < images1.length; i++) {
-
-    //   filesim.push(images1[i])
-    // }
-    // console.log(filesim)
-
-    this.setState({ audio: event.target.files[0] });
-    // console.log([...filesim])
-    console.log(this.state.audio)
+    let filesim = [...this.state.audio]
+    Array.from(event.target.files).forEach(x=>filesim.push(x))
+    this.setState({ audio: filesim},()=>{
+      // console.log(this.state.audio)
+    });
   }
 
 
@@ -126,9 +105,9 @@ class CreatePost extends React.Component {
     main.style.display = 'none'
     document.body.style.overflow = 'scroll'
     this.setState({
-      audio: null,
-      video: null,
-      images: null,
+      audio: [],
+      video: [],
+      images: [],
       title: '',
       text: ''
     })
@@ -150,7 +129,7 @@ class CreatePost extends React.Component {
                   onChange={this.handleImageUpload}
                   type="file"
                   style={{ display: "none" }}
-                  // multiple={true}
+                  multiple={true}
                   accept="image/*"
                 />
                 <button className="inputbtn" onClick={(ev) => { this.refs.fileInput1.click() }} >Add Image</button>
@@ -162,7 +141,7 @@ class CreatePost extends React.Component {
                   onChange={this.handleVideoUpload}
                   type="file"
                   style={{ display: "none" }}
-                  // multiple={true}
+                  multiple={true}
                   accept="video/*"
                 />
                 <button className="inputbtn" onClick={(ev) => { this.refs.fileInput2.click() }} >Add Video</button>
@@ -174,7 +153,7 @@ class CreatePost extends React.Component {
                   onChange={this.handleAudioUpload}
                   type="file"
                   style={{ display: "none" }}
-                  // multiple={true}
+                  multiple={true}
                   accept="audio/*"
                 />
                 <button className="inputbtn" onClick={(ev) => { this.refs.fileInput3.click() }} >Add Audio</button>

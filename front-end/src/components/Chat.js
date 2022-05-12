@@ -123,7 +123,7 @@ class Chat extends Component {
         'chat_id': this.props.id,
         'message': message
       }));
-      // this.setState({value: ""})
+      this.setState({value: ""})
       this.scrollToMyRef()
       // this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
     };
@@ -199,7 +199,7 @@ class Chat extends Component {
         {/* <input value={this.state.value} onChange={this.handleChange} />
         <button onClick={this.sendMessage}>SEND</button> */}
         <form className="messaging" >
-          <textarea className="chatting" name="chatting" id="chat-message-input" placeholder="message..." value={this.state.value} onChange={this.handleChange} autoFocus></textarea>
+          <textarea className="chatting" name="chatting" id="chat-message-input" placeholder="message..." value={this.state.value} onChange={this.handleChange} autoFocus />
           <button id="chat-message-submit" type='button' className="sendmessage" >Send</button>
         </form>
       </div>

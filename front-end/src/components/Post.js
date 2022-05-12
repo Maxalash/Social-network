@@ -205,12 +205,12 @@ class Post extends React.Component {
                 </Carousel.Item>
               )
             })}
-            {this.props.audio?.map((data, key) => {
+            {this.props.video?.map((data, key) => {
               // console.log(data.audio)
               return (
                 <Carousel.Item key={data.id}>
                   <video controls width='100%' autoPlay>
-                    <source src={data.audio} type="video/mp4" />
+                    <source src={data.video} type="video/mp4" />
                   </video>
 
                   <Carousel.Caption>
@@ -227,11 +227,11 @@ class Post extends React.Component {
           <Card.Body>
             <Container>
 
-              {this.props.video?.map((data, key) => {
+              {this.props.audio?.map((data, key) => {
                 // console.log(data.video)
                 return (
                   <audio key={data.id} width="320" height="240" controls>
-                    <source src={data.video} type="audio/mp3" />
+                    <source src={data.audio} type="audio/mp3" />
                   </audio>
                 )
               })}
@@ -283,6 +283,7 @@ class Post extends React.Component {
                       pub_date={ps.pub_date}
                       getComments={this.getComments}
                       post={ps.post}
+                      yours = {ps.yours}
                     />
                   );
                 })}

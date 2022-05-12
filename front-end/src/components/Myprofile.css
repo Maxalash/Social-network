@@ -45,6 +45,7 @@
     clear: both;
     float: right;
     color: white;
+    white-space: pre-wrap;
 }
 
 .receivedmessage {
@@ -59,6 +60,7 @@
     background: #ee1fd2;
     clear: both;
     float: left;
+    white-space: pre-wrap;
 }
 
 .name_date{
@@ -205,4 +207,16 @@ main {
 .btn-close{
     margin-right: 10px;
     display: none;
+}
+
+.createchat{
+    width: 600px;
+    /* position:; */
+    margin: 0 auto;
+    margin-bottom: 10px;
+    justify-content: center;
+    background-color: blueviolet;
+    color: white;
+    border-color: darkorchid;
+    border-radius: 15px;
 }
