@@ -12,6 +12,10 @@ class Post(models.Model):
         return self.bookmark_set.all().count()
 
     @property
+    def comments_count(self):
+        return self.post_comments.all().count()
+
+    @property
     def likes_count(self):
         return self.postlike_set.all().count()
 

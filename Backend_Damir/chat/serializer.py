@@ -56,9 +56,16 @@ class ChatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Chat
         fields = '__all__'
-    def get_friend(self,obj):
-        return str(obj.user)
 
+    def get_friend(self,obj):
+        user = None
+        request = self.context.get("request")
+        if request and hasattr(request, "user"):
+            user = request.user
+        for i in obj.user.all():
+            if not user == i:
+                return str(i)
+        return None
 class CreateChatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Chat
