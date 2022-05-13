@@ -9,10 +9,25 @@
     width: 100%;
     margin: 5px auto;
     text-align: center;
-    background-color: blueviolet;
+    background: rgb(133,48,237);
+    background: linear-gradient(0deg, rgba(133,48,237,1) 0%, rgba(95,40,139,1) 100%);
     color: white;
     padding: 5px 40%;
     border-radius: 10px;
     max-width: 600px;
     border-color: darkorchid;
+}
+
+.blur-screen {
+    position: fixed;
+    display: none;
+    overflow:auto;
+    backdrop-filter: blur(8px);
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.5);
+    z-index: 25;
+    min-height: 100%;
 }

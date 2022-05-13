@@ -1,12 +1,12 @@
 import React from "react";
 import './Myprofile.css';
-import { ListGroup, NavLink, Accordion } from 'react-bootstrap';
+import { ListGroup, NavLink, Accordion, Nav } from 'react-bootstrap';
 import Header from './Header'
 import axios from "axios";
 import Footer from './Footer';
 import Post from './Post';
-import Chat from './Chat';
 import Friend from './Friend';
+import Profile from './Profile';
 
 
 import Cookies from 'universal-cookie';
@@ -26,7 +26,7 @@ class Myprofile extends React.Component {
       chats: null,
       books: null,
       perposts: null,
-      perid:null
+      perid: null
     };
     this.friendsref = React.createRef()
     this.postref = React.createRef()
@@ -41,6 +41,13 @@ class Myprofile extends React.Component {
     this.loadMyBooks = this.loadMyBooks.bind(this)
     this.loadPersonPost = this.loadPersonPost.bind(this)
     this.creatChat = this.creatChat.bind(this)
+    this.checkLog();
+  }
+  checkLog(){
+    let data = cookieGet()
+    if(data==undefined){
+       document.location.href='/login'
+    }
   }
 
   // getPosts() {
@@ -197,7 +204,7 @@ class Myprofile extends React.Component {
     // const chat = <Chat key={id} id={id} />
     // prnt.children.concat(<Chat key={id} id={id} />)
 
-    
+
     // prnt.children[2].style.display = "block"
     prnt.children[0].style.display = "inline-block"
   }
@@ -217,7 +224,7 @@ class Myprofile extends React.Component {
       el.style.display = 'block'
     })
 
-    
+
     prnt.children[0].style.display = "none"
 
   }
@@ -262,7 +269,7 @@ class Myprofile extends React.Component {
 
   loadPersonPost(id) {
     // console.log('3 phase'+id)
-    this.setState({perid:id})
+    this.setState({ perid: id })
     if (!id) return
     const toke = cookieGet()
     // console.log(toke)
@@ -290,7 +297,7 @@ class Myprofile extends React.Component {
       });
     this.toggle(null, 'perpost')
   }
-  creatChat(e){
+  creatChat(e) {
     e.preventDefault()
     let form_data = new FormData();
     form_data.append('user', this.state.perid)
@@ -307,12 +314,12 @@ class Myprofile extends React.Component {
       }
     })
       .then(res => {
-        
-      this.loadChats()
-      this.menu.current.click()
-      // console.log('[key= "'+res.data+'"]')
-      console.log(this.friendsref.current.children[0].querySelector('#chat_'+res.data))
-      this.friendsref.current.children[0].querySelector('#chat_'+res.data).children[1].click()
+
+        this.loadChats()
+        this.menu.current.click()
+        // console.log('[key= "'+res.data+'"]')
+        console.log(this.friendsref.current.children[0].querySelector('#chat_' + res.data))
+        this.friendsref.current.children[0].querySelector('#chat_' + res.data).children[1].click()
       })
       .catch(err => console.log(err))
 
@@ -323,14 +330,19 @@ class Myprofile extends React.Component {
     return (
       <div>
         <Header currloc='myprofile' loadthem={this.loadPersonPost} />
-        <ListGroup variant="flush" className="bg-purple menu-bar list-group1" >
+        <nav className="navbar menulist navbar-expand-lg navbar-light bg-light">
+          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className ="collapse navbar-collapse" id="navbarNav">
+             <ListGroup variant="flush" className="navbar-nav flex-column bg-purple menu-bar list-group1" >
           <ListGroup.Item ><NavLink className="navbar-item"
             activeclassame="is-active"
             href="/myprofile"
             onClick={(event) => { this.toggle(event, 'profile') }}
             exact="true">My profile</NavLink></ListGroup.Item>
           <ListGroup.Item ><NavLink className="navbar-item"
-          ref={this.menu}
+            ref={this.menu}
             activeclassame="is-active"
             href="#friends"
             onClick={(event) => { this.toggle(event, 'friend') }}
@@ -346,9 +358,13 @@ class Myprofile extends React.Component {
             onClick={(event) => { this.toggle(event, 'bookmarks') }}
             exact="true">My Bookamrks</NavLink></ListGroup.Item>
         </ListGroup>
+          </div>
+        </nav>
+        
         <main>
           <section id="profile" className="justify-content-center" ref={this.profileref} style={{ display: 'block' }}>
-            <h1 style={{ margin: '0 auto' }}>Here is some profile data</h1>
+            {/* <h1 style={{ margin: '0 auto' }}>Here is some profile data</h1> */}
+            <Profile friends = {this.friendsref} posts={this.postref} books={this.bookref}/>
           </section>
           <section id="friends" className="friend-list" ref={this.friendsref} style={{ display: 'none' }}>
 
@@ -360,7 +376,7 @@ class Myprofile extends React.Component {
                     rvclass={this.rvclass}
                     addclass={this.addClasses}
                     id={ps.id}
-                    name={ps.friend}
+                    friend={ps.friend}
                   />
                   // <ListGroup.Item key={ps.id}>
                   //   <button type="button" className="btn-close" aria-label="Close" onClick={(ev) => { this.rvclass(ev, ps.id) }} />
@@ -394,6 +410,7 @@ class Myprofile extends React.Component {
                   bookmarked={ps.bookmarked}
                   updpost={this.loadMyPosts}
                   currloc='post'
+                  commcount = {ps.comments_count}
                 />
               )
             })}
@@ -418,12 +435,13 @@ class Myprofile extends React.Component {
                   bookmarked={ps.bookmarked}
                   updpost={this.loadMyPosts}
                   currloc='bookmark'
+                  commcount = {ps.comments_count}
                 />
               )
             })}
           </section>
-          <section ref={this.personpost} style={{ display: 'none', flexDirection:'column' }}>
-            <button className='createchat' onClick={(e)=>{this.creatChat(e)}}>Message</button>
+          <section ref={this.personpost} style={{ display: 'none', flexDirection: 'column' }}>
+            <button className='createchat' onClick={(e) => { this.creatChat(e) }}>Message</button>
             {this.state.perposts?.map((ps, key) => {
               // const ps = ps2['post']
               // console.log(ps)

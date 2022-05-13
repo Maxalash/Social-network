@@ -26,7 +26,7 @@
     background-color: white;
 }
 
-.btn:hover {
+.btn:hover, .btn:active {
     background-color: #ce72f6;
     color: blueviolet;
 }

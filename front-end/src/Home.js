@@ -117,8 +117,8 @@ class Home extends React.Component {
     //     />);
     // }
     opencrPost(e){
-        // console.log(e.target.nextSibling)
-        e.target.nextSibling.style.display = 'block'
+        document.body.style.overflow = 'hidden';
+        e.target.nextSibling.style.display = 'block';
     }
     
     
@@ -149,6 +149,7 @@ class Home extends React.Component {
                             bookmarked = {ps.bookmarked}
                             updpost = {this.getPosts}
                             currloc='home'
+                            commcount = {ps.comments_count}
                         />  
                     )})}
                 {/* <Listposts data={this.state.posts}/> */}

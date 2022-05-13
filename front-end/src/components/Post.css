@@ -49,7 +49,7 @@ background: linear-gradient(90deg, rgba(58,167,180,1) 0%, rgba(190,29,253,1) 25%
 .blur-screen {
     position: fixed;
     display: none;
-    overflow: auto;
+    overflow:auto;
     backdrop-filter: blur(8px);
     left: 0;
     right: 0;

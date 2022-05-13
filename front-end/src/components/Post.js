@@ -29,6 +29,7 @@ class Post extends React.Component {
       likenum: this.props.likes_count,
       comments: [],
       commtxt: ''
+      // commcount: this.props.commcount
     }
     // console.log(this.props.liked)\
     // this.showmod = this.showmod.bind(this);
@@ -266,7 +267,7 @@ class Post extends React.Component {
           </Card.Footer>
           <Accordion>
             <Accordion.Item eventKey="0">
-              <Accordion.Header>Comments</Accordion.Header>
+              <Accordion.Header>Comments {(" "+this.props.commcount)}</Accordion.Header>
               <Accordion.Body>
                 {this.state.comments?.map((ps, key) => {
                   // console.log(ps)

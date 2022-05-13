@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import axios from "axios"
 import { Link } from 'react-router-dom';
 import { Card, Alert } from 'react-bootstrap';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import './index.css';
 import Cookies from 'universal-cookie';
 const cookie = new Cookies()
@@ -26,6 +27,8 @@ class Register extends React.Component{
         this.state = {
             username: "damir4",
             password: "damir123",
+            name:'damir',
+            email:'ema@adfa.com',
             loggedIN: cookieGet()
         };
 
@@ -111,6 +114,40 @@ class Register extends React.Component{
                     </small>
                   </div>
                   <div className="form-group">
+                    <label>Full name</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                    //   id="EmailInput"
+                    //   name="EmailInput"
+                    //   aria-describedby="emailHelp"
+                      placeholder="Enter name"
+                      onChange={(event) => {
+                          this.setState({name: event.target.value})
+                        }}
+                    />
+                    <small id="emailHelp" className="text-danger form-text">
+                      {}
+                    </small>
+                  </div>
+                  <div className="form-group">
+                    <label>Email</label>
+                    <input
+                      type="email"
+                      className="form-control"
+                    //   id="EmailInput"
+                    //   name="EmailInput"
+                    //   aria-describedby="emailHelp"
+                      placeholder="Enter email"
+                      onChange={(event) => {
+                          this.setState({email: event.target.value})
+                        }}
+                    />
+                    <small id="emailHelp" className="text-danger form-text">
+                      {}
+                    </small>
+                  </div>
+                  <div className="form-group">
                     <label>Password</label>
                     <input
                       type="text"
@@ -137,6 +174,7 @@ class Register extends React.Component{
                     Submit
                   </button>
                 </form>
+                <div className='loginapi'><span>Login with <i className="bi bi-google"></i></span>oogle</div>
         </Card.Body>
         <Card.Footer className="text" style={{borderBottomLeftRadius:50+"px", borderBottomRightRadius:50+"px"}}><Link to="/login">Login</Link></Card.Footer>
       </Card>
