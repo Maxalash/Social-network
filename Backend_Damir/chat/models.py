@@ -8,7 +8,7 @@ class Message(models.Model):
 
     # seen_for_sender = models.BooleanField(default=True)
     # seen_for_receiver = models.BooleanField(default=True)
-
+#hvysefjbcjhsvdyucgwhjevuc
 class MessageImage(models.Model):
     message = models.ForeignKey(Message,on_delete=models.CASCADE)
     owner = models.ForeignKey('auth.User', on_delete=models.DO_NOTHING)
