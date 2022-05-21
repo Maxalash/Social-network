@@ -54,7 +54,7 @@ class Login extends React.Component{
             password: this.state.password
         })
     };
-    fetch('http://127.0.0.1:8000/post/login/', requestOptions)
+    fetch('http://'+window.server_url+'/post/login/', requestOptions)
     .then(res => {
       if (res.status >= 400 ) {
         console.log("Error bad request")

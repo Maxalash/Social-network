@@ -32,10 +32,10 @@ class Chat extends Component {
     messages: null,
     value: ""
   };
-  client = new W3CWebSocket('ws://127.0.0.1:8000/ws/chat/'+ this.props.id+'/', ['Token', cookieGet()]);
+  client = new W3CWebSocket('ws://'+window.server_url+'/ws/chat/'+ this.props.id+'/', ['Token', cookieGet()]);
   // chat_id= this.props.id
   loadMessages() {
-    let url = 'http://localhost:8000/chat/load_messages/'+ this.props.id;
+    let url = 'http://'+window.server_url+'/chat/load_messages/'+ this.props.id;
     
     // console.log(url)
     const toke = cookieGet()

@@ -45,7 +45,7 @@ export default function Search(props) {
       }
     };
     // console.log(e.target.value)
-    fetch('http://localhost:8000/chat/users/?search=' + txtname, requestOptions)
+    fetch('http://'+window.server_url+'/chat/users/?search=' + txtname, requestOptions)
       .then(res => {
         return res.json();
       })

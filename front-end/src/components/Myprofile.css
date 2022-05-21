@@ -101,11 +101,12 @@
     color: black;
 }
 
-.navbar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 25;
+.menulist{
+    top: 50px;
+    z-index: 24;
+    background-color: white;
+    width: min-content;
+    display: none;
 }
 
 .friend-list {
@@ -117,7 +118,7 @@
 }
 
 main {
-    margin-top: 90px;
+    margin-top: 85px;
     min-height: 585px;
 }
 
@@ -219,4 +220,16 @@ main {
     color: white;
     border-color: darkorchid;
     border-radius: 15px;
+}
+
+@media screen and (max-width: 1000px) {
+    .list-group1{
+        display: none;
+    }
+    .menulist{
+        display: block;
+    }
+    main{
+        margin-top: 40px;
+    }
 }

@@ -60,7 +60,7 @@ class Register extends React.Component{
             registered: 0
         })
     };
-    fetch('http://127.0.0.1:8000/post/register/', requestOptions)
+    fetch('http://'+window.server_url+'/post/register/', requestOptions)
     .then(res => {
       if (res.status >= 400 ) {
         console.log("Error bad request")
@@ -73,7 +73,7 @@ class Register extends React.Component{
         console.log(data)
         txte = data
       })
-    fetch('http://127.0.0.1:8000/post/login/', requestOptions)
+    fetch('http://'+window.server_url+'/post/login/', requestOptions)
     .then(res => {
         if(res.status>=400) document.location.href = '/'
         return null

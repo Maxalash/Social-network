@@ -33,7 +33,7 @@ function checkSession() {
       'Authorization': 'Token ' + toke
     }
   };
-  fetch('http://127.0.0.1:8000/post/posts/', requestOptions)
+  fetch('http://'+window.server_url+'/post/posts/', requestOptions)
     .then(res => {
       console.log(res.ok)
       if (res.ok) {
