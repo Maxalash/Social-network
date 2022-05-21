@@ -65,7 +65,7 @@ export default function Search(props) {
     const close=(e)=>{
         e.preventDefault();
         setstr(null);
-        document.querySelector('#userstory').cli
+        document.querySelector('#userstory').click = 'none'
     }
     React.useEffect(() => {
         // console.log(str);
