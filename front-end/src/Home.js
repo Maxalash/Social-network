@@ -18,7 +18,8 @@ import CreateStory from './components/CreateStory';
 import UserStory from './components/UserStory';
 const cookie = new Cookies()
 
-window.server_url = '10.1.11.249:8000';//10.1.11.249
+// window.server_url = '10.1.11.249:8000';
+window.server_url = '127.0.0.1:8000';
 
 function cookieGet() {
     return cookie.get('token');
@@ -73,7 +74,6 @@ class Home extends React.Component {
             .then(data => {
                 this.setState({ posts: data })
                 //   console.log(this.state.posts)
-                return data
             });
 
 
@@ -110,7 +110,7 @@ class Home extends React.Component {
                     <button className='creatstory' onClick={(e) => { this.opencrPost(e) }}>+</button>
                     <CreateStory updatepost={this.getStories} /><br />
                         {this.state.ustory?.map((str) => {
-                            return <UserStory uname={str.username} key={str.id} id={str.id} />
+                            return <UserStory updatepost={this.getStories} uname={str.username} key={str.id} id={str.id} />
                         })}
                     </div>
                     <button className='createpost' onClick={(e) => { this.opencrPost(e) }}>Create POST</button>

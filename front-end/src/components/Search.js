@@ -84,7 +84,7 @@ export default function Search(props) {
           Button
         </Button> */}
       </InputGroup>
-      <ListGroup>
+      <ListGroup id="searchList">
       {reszs?.map((rez, key)=>{
         // console.log(rez.username)
         return <ListGroup.Item key={key} onClick={(e)=>{handleClick(e, rez.id, rez.username)}}>

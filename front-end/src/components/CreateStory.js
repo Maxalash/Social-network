@@ -35,10 +35,10 @@ class CreateStory extends React.Component {
     if (this.state.images !== []) this.state.images.forEach(x => form_data.append('image', x));
     // if (this.state.video.length > 0) form_data.append('video', this.state.video, this.state.video.name);
     // if (this.state.audio.length > 0) form_data.append('audio', this.state.audio, this.state.audio.name);
-    console.log('form_data content:')
-    for (var pair of form_data.entries()) {
-      console.log(pair[0] + ', ' + pair[1]);
-    }
+    // console.log('form_data content:')
+    // for (var pair of form_data.entries()) {
+    //   console.log(pair[0] + ', ' + pair[1]);
+    // }
     let url = 'http://'+window.server_url+'/post/create_story/';
     const toke = cookieGet()
     axios.post(url, form_data, {
@@ -49,8 +49,8 @@ class CreateStory extends React.Component {
     })
       .then(res => {
         // this.props.updatepost(res.data)
-        console.log(res.status)
-        console.log(res)
+        // console.log(res.status)
+        // console.log(res)
       })
       .catch(err => console.log(err))
     this.closePost(event)
@@ -74,7 +74,6 @@ class CreateStory extends React.Component {
 
   closePost(e) {
     const main = e.target.parentNode.parentNode.parentNode.parentNode
-    console.log(main)
     main.style.display = 'none'
     document.body.style.overflow = 'scroll'
     this.setState({

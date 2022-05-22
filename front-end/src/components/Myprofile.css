@@ -232,4 +232,20 @@ main {
     main{
         margin-top: 40px;
     }
+    section{
+        margin-top: 110px;
+    }
+    .friend-list{
+        width:100%;
+
+    }
+    #friendsList{
+        top:110px;
+    }
+    #searchList{
+        z-index: 35;
+    }
+    .searchbar{
+        width: 70%;
+    }
 }
