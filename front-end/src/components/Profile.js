@@ -52,7 +52,7 @@ export default function Profile(props) {
                 </Row>
             </ButtonGroup> */}
             <div className="avatar" style={{
-                backgroundImage: `url(${background})`,
+                backgroundImage: 'url('+background+')',
                 backgroundPosition: 'center',
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat'
