@@ -65,7 +65,7 @@ body::-webkit-scrollbar{
 }
 
 .userstory+p{
-    width: 100%;
+    width: 60px;
     overflow: hidden;
 }
 

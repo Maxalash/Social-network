@@ -18,8 +18,8 @@ import CreateStory from './components/CreateStory';
 import UserStory from './components/UserStory';
 const cookie = new Cookies()
 
-// window.server_url = '10.1.11.249:8000';
-window.server_url = '127.0.0.1:8000';
+window.server_url = '10.1.11.249:8000';
+// window.server_url = '127.0.0.1:8000';
 
 function cookieGet() {
     return cookie.get('token');
