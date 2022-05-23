@@ -54,10 +54,11 @@ class Login extends React.Component{
             password: this.state.password
         })
     };
-    fetch('http://127.0.0.1:8000/post/login/', requestOptions)
+    fetch('http://'+window.server_url+'/post/login/', requestOptions)
     .then(res => {
       if (res.status >= 400 ) {
         console.log("Error bad request")
+        document.querySelector('.invalid-feedback').style.display = 'block';
         return null
       }
       return res.json();
@@ -124,6 +125,9 @@ class Login extends React.Component{
                   <button type="submit" className="btn" style={{background: '#350f4f', color: 'white'}}>
                     Submit
                   </button>
+                  <div className="invalid-feedback">
+                    Username or password is invalid
+                  </div>
                 </form>
         </Card.Body>
         <Card.Footer className="text" style={{borderBottomLeftRadius:50+"px", borderBottomRightRadius:50+"px"}}><Link to="/register">Register</Link></Card.Footer>

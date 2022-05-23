@@ -63,7 +63,7 @@ class Post extends React.Component {
       }
     };
 
-    fetch('http://127.0.0.1:8000/post/bookmark_post/' + this.props.id + "/", requestOptions)
+    fetch('http://'+window.server_url+'/post/bookmark_post/' + this.props.id + "/", requestOptions)
       .then(res => {
         return res.json();
       })
@@ -85,7 +85,7 @@ class Post extends React.Component {
       }
     };
 
-    fetch('http://127.0.0.1:8000/post/like_post/' + this.props.id + "/", requestOptions)
+    fetch('http://'+window.server_url+'/post/like_post/' + this.props.id + "/", requestOptions)
       .then(res => {
         return res.json();
       })
@@ -122,7 +122,7 @@ class Post extends React.Component {
       }
     };
     // console.log(this.props.id)
-    fetch('http://127.0.0.1:8000/post/post_comments/' + idm, requestOptions)
+    fetch('http://'+window.server_url+'/post/post_comments/' + idm, requestOptions)
       .then(res => {
         return res.json();
       })
@@ -148,7 +148,7 @@ class Post extends React.Component {
       }
     };
 
-    fetch('http://127.0.0.1:8000/post/delete_post/' + this.props.id + "", requestOptions)
+    fetch('http://'+window.server_url+'/post/delete_post/' + this.props.id + "", requestOptions)
       .then(res => {
         return res.json();
       })
@@ -162,7 +162,7 @@ class Post extends React.Component {
     let form_data = new FormData();
     form_data.append('text', this.state.commtxt)
     form_data.append('post', this.props.id)
-    let url = 'http://localhost:8000/post/create_comment/';
+    let url = 'http://'+window.server_url+'/post/create_comment/';
     const toke = cookieGet()
     axios.post(url, form_data, {
       headers: {

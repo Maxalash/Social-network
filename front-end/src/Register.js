@@ -60,35 +60,42 @@ class Register extends React.Component{
             registered: 0
         })
     };
-    fetch('http://127.0.0.1:8000/post/register/', requestOptions)
+    fetch('http://'+window.server_url+'/post/register/', requestOptions)
     .then(res => {
-      if (res.status >= 400 ) {
+      if (res.status >= 400) {
+        console.log(res.status)
         console.log("Error bad request")
         return null
       }
         return res.json();
       })
       .then(data => {
+        if(data.username){
+          console.log("User already exists")
+          console.log(document.querySelector('.invalid-feedback'));
+          document.querySelector('.invalid-feedback').style.display = 'block';
+          return null
+        }
         this.setState({loggedIN:1})
         console.log(data)
         txte = data
+        document.location.href='/login'
       })
-    fetch('http://127.0.0.1:8000/post/login/', requestOptions)
-    .then(res => {
-        if(res.status>=400) document.location.href = '/'
-        return null
-        return res.json();
-      })
-      .then(data => {
-        var tooken = data
-        console.log(tooken)
-      })
+    // fetch('http://'+window.server_url+'/post/login/', requestOptions)
+    // .then(res => {
+    //     // if(res.status<400) document.location.href = '/'
+    //     console.log(res.status)
+    //     return null
+    //     // return res.json();
+    //   })
+    //   .then(data => {
+    //     var tooken = data
+    //     console.log(tooken)
+    //   })
   };
 
   render(){
-    if(this.state.loggedIN ===  0){
-        <Link to="/" />
-    }
+    
     return (
         <div>
         {this.state.loggedIN === 'undefined'||this.state.loggedIN===undefined ? "":document.location.href='/login'}
@@ -114,43 +121,9 @@ class Register extends React.Component{
                     </small>
                   </div>
                   <div className="form-group">
-                    <label>Full name</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                    //   id="EmailInput"
-                    //   name="EmailInput"
-                    //   aria-describedby="emailHelp"
-                      placeholder="Enter name"
-                      onChange={(event) => {
-                          this.setState({name: event.target.value})
-                        }}
-                    />
-                    <small id="emailHelp" className="text-danger form-text">
-                      {}
-                    </small>
-                  </div>
-                  <div className="form-group">
-                    <label>Email</label>
-                    <input
-                      type="email"
-                      className="form-control"
-                    //   id="EmailInput"
-                    //   name="EmailInput"
-                    //   aria-describedby="emailHelp"
-                      placeholder="Enter email"
-                      onChange={(event) => {
-                          this.setState({email: event.target.value})
-                        }}
-                    />
-                    <small id="emailHelp" className="text-danger form-text">
-                      {}
-                    </small>
-                  </div>
-                  <div className="form-group">
                     <label>Password</label>
                     <input
-                      type="text"
+                      type="password"
                       className="form-control"
                     //   id="exampleInputPassword1"
                       placeholder="Password"
@@ -173,8 +146,11 @@ class Register extends React.Component{
                   <button type="submit" className="btn" style={{background: '#350f4f', color: 'white'}}>
                     Submit
                   </button>
+                  <div className="invalid-feedback">
+                    User with this username already exists.
+                  </div>
                 </form>
-                <div className='loginapi'><span>Login with <i className="bi bi-google"></i></span>oogle</div>
+                {/* <div className='loginapi'><span>Login with <i className="bi bi-google"></i></span>oogle</div> */}
         </Card.Body>
         <Card.Footer className="text" style={{borderBottomLeftRadius:50+"px", borderBottomRightRadius:50+"px"}}><Link to="/login">Login</Link></Card.Footer>
       </Card>

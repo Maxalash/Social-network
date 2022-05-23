@@ -1,6 +1,6 @@
 import React from "react";
 import './Myprofile.css';
-import { ListGroup, NavLink, Accordion, Nav } from 'react-bootstrap';
+import { ListGroup, NavLink, Accordion, Nav, Navbar, Container } from 'react-bootstrap';
 import Header from './Header'
 import axios from "axios";
 import Footer from './Footer';
@@ -65,7 +65,7 @@ class Myprofile extends React.Component {
   //     }
   //   };
 
-  //   fetch('http://127.0.0.1:8000/post/author_posts/', requestOptions)
+  //   fetch('http://'+window.server_url+'/post/author_posts/', requestOptions)
   //     .then(res => {
   //       return res.json();
   //     })
@@ -97,7 +97,7 @@ class Myprofile extends React.Component {
       }
     };
 
-    fetch('http://127.0.0.1:8000/post/bookmarked_posts/', requestOptions)
+    fetch('http://'+window.server_url+'/post/bookmarked_posts/', requestOptions)
       .then(res => {
         return res.json();
       })
@@ -124,7 +124,7 @@ class Myprofile extends React.Component {
       }
     };
 
-    fetch('http://127.0.0.1:8000/post/own_posts/', requestOptions)
+    fetch('http://'+window.server_url+'/post/own_posts/', requestOptions)
       .then(res => {
         return res.json();
       })
@@ -230,7 +230,7 @@ class Myprofile extends React.Component {
   }
 
   loadChats() {
-    let url = 'http://localhost:8000/chat/load_chats/';
+    let url = 'http://'+window.server_url+'/chat/load_chats/';
     const toke = cookieGet()
     axios.get(url, {
       headers: {
@@ -285,7 +285,7 @@ class Myprofile extends React.Component {
       }
     };
 
-    fetch('http://127.0.0.1:8000/post/author_posts/' + id, requestOptions)
+    fetch('http://'+window.server_url+'/post/author_posts/' + id, requestOptions)
       .then(res => {
         return res.json();
       })
@@ -305,7 +305,7 @@ class Myprofile extends React.Component {
     // for (var pair of form_data.entries()) {
     //   console.log(pair[0] + ', ' + pair[1]);
     // }
-    let url = 'http://localhost:8000/chat/start_chat/';
+    let url = 'http://'+window.server_url+'/chat/start_chat/';
     const toke = cookieGet()
     axios.post(url, form_data, {
       headers: {
@@ -330,36 +330,60 @@ class Myprofile extends React.Component {
     return (
       <div>
         <Header currloc='myprofile' loadthem={this.loadPersonPost} />
-        <nav className="navbar menulist navbar-expand-lg navbar-light bg-light">
-          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className ="collapse navbar-collapse" id="navbarNav">
-             <ListGroup variant="flush" className="navbar-nav flex-column bg-purple menu-bar list-group1" >
-          <ListGroup.Item ><NavLink className="navbar-item"
+        <Navbar collapseOnSelect expand="lg" variant="dark" className="menulist">
+  <Container>
+  <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+  <Navbar.Collapse id="responsive-navbar-nav">
+    <Nav className="me-auto">
+    <NavLink className="navbar-item"
+            activeclassame="is-active"
+            href="/myprofile"
+            onClick={(event) => { this.toggle(event, 'profile') }}
+            exact="true">My profile</NavLink>
+    <NavLink className="navbar-item"
+            ref={this.menu}
+            activeclassame="is-active"
+            href="#friends"
+            onClick={(event) => { this.toggle(event, 'friend') }}
+            exact="true">Friends</NavLink>
+    <NavLink className="navbar-item"
+              activeclassame="is-active"
+              href="#post"
+              onClick={(event) => { this.toggle(event, 'post') }}
+              exact="true">My Posts</NavLink>
+    <NavLink className="navbar-item"
+              activeclassame="is-active"
+              href="#bookmarks"
+              onClick={(event) => { this.toggle(event, 'bookmarks') }}
+              exact="true">My Bookamrks</NavLink>
+            </Nav>
+  </Navbar.Collapse>
+  </Container>
+</Navbar>
+    
+             <ListGroup variant="flush" className="flex-column bg-purple menu-bar list-group1" >
+          <ListGroup.Item className="nav-item"><NavLink className="navbar-item"
             activeclassame="is-active"
             href="/myprofile"
             onClick={(event) => { this.toggle(event, 'profile') }}
             exact="true">My profile</NavLink></ListGroup.Item>
-          <ListGroup.Item ><NavLink className="navbar-item"
+          <ListGroup.Item className="nav-item"><NavLink className="navbar-item"
             ref={this.menu}
             activeclassame="is-active"
             href="#friends"
             onClick={(event) => { this.toggle(event, 'friend') }}
             exact="true">Friends</NavLink></ListGroup.Item>
-          <ListGroup.Item ><NavLink className="navbar-item"
+          <ListGroup.Item className="nav-item"><NavLink className="navbar-item"
             activeclassame="is-active"
             href="#post"
             onClick={(event) => { this.toggle(event, 'post') }}
             exact="true">My Posts</NavLink></ListGroup.Item>
-          <ListGroup.Item ><NavLink className="navbar-item"
+          <ListGroup.Item className="nav-item"><NavLink className="navbar-item"
             activeclassame="is-active"
             href="#bookmarks"
             onClick={(event) => { this.toggle(event, 'bookmarks') }}
             exact="true">My Bookamrks</NavLink></ListGroup.Item>
         </ListGroup>
-          </div>
-        </nav>
         
         <main>
           <section id="profile" className="justify-content-center" ref={this.profileref} style={{ display: 'block' }}>

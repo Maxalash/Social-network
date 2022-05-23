@@ -43,7 +43,7 @@ class CreatePost extends React.Component {
       })
     };
     // console.log(requestOptions)
-    fetch('http://127.0.0.1:8000/post/edit_post/' + this.props.id + "/", requestOptions)
+    fetch('http://'+window.server_url+'/post/edit_post/' + this.props.id + "/", requestOptions)
       .then(res => {
         return res.json();
       })

@@ -46,7 +46,7 @@ class CreatePost extends React.Component {
     for (var pair of form_data.entries()) {
       console.log(pair[0] + ', ' + pair[1]);
     }
-    let url = 'http://localhost:8000/post/make_post/';
+    let url = 'http://'+window.server_url+'/post/make_post/';
     const toke = cookieGet()
     axios.post(url, form_data, {
       headers: {

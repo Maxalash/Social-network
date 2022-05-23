@@ -50,7 +50,7 @@ class Comment extends React.Component {
       })
     };
     console.log(requestOptions)
-    fetch('http://127.0.0.1:8000/post/edit_comment/' + this.props.id + "/", requestOptions)
+    fetch('http://'+window.server_url+'/post/edit_comment/' + this.props.id + "/", requestOptions)
       .then(res => {
         return res.json();
       })
@@ -76,7 +76,7 @@ class Comment extends React.Component {
       }
     };
 
-    fetch('http://127.0.0.1:8000/post/like_comment/' + this.props.id + "/", requestOptions)
+    fetch('http://'+window.server_url+'/post/like_comment/' + this.props.id + "/", requestOptions)
       .then(res => {
         return res.json();
       })
@@ -115,7 +115,7 @@ class Comment extends React.Component {
       }
     };
 
-    fetch('http://127.0.0.1:8000/post/delete_comment/' + this.props.id + "", requestOptions)
+    fetch('http://'+window.server_url+'/post/delete_comment/' + this.props.id + "", requestOptions)
       .then(res => {
         return res.json();
       })
