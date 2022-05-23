@@ -74,13 +74,12 @@ class Chat extends Component {
   componentDidMount() {
     this.loadMessages()
     this.client.onopen = (e) => {
-      console.log("Connected")
+      // console.log("Connected")
     }
 
     this.client.onmessage = (e) => {
       // console.log(JSON.parse(e.data))
       var data = JSON.parse(e.data);
-      console.log(data)
       var message_dat = {
         id: data.message_id,
         chat_id: data.chat_id,

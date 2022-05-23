@@ -12,6 +12,7 @@ import {
 } from "react-router-dom";
 import Search from "./Search";
 
+import axios from "axios";
 import Cookies from 'universal-cookie';
 const cookie = new Cookies()
 
@@ -50,10 +51,10 @@ function checkSession() {
     });
 }
 
-const Navdrop = () => {
+const Navdrop = (props) => {
   return (
     <Nav className="justify-content-end" >
-      <NavDropdown title="My profile" id='basic-nav-dropdown'>
+      <NavDropdown title={props.un} id='basic-nav-dropdown'>
         <NavDropdown.Item href="/myprofile">My profile</NavDropdown.Item>
         <NavDropdown.Divider />
         <NavDropdown.Item onClick={() => logout("Polo Ralph Lauren")}>Log out</NavDropdown.Item>
@@ -81,10 +82,30 @@ const Navln = () => {
 
 
 const Header = (props) => {
+  const [uname, setnem] = useState(null);
   const loading = (n)=>{
     // console.log('2 phase'+n)
     if(props.loadthem) props.loadthem(n)
   }
+  const getName = () => {
+    const toke = cookieGet();
+    axios.get('http://' + window.server_url + '/post/get_username/', {
+        headers: {
+            'content-type': 'multipart/form-data',
+            'Authorization': 'Token ' + toke
+        }
+    }).then(res => {
+        return res.data
+    }).then(data => {
+        // setwin(true)
+        setnem(data)
+    })
+}
+useEffect((e) => {
+  console.log('got')
+  getName()
+});
+
   return (
     <Navbar expand="lg">
       <Container>
@@ -115,7 +136,7 @@ const Header = (props) => {
             
 
 
-          {cookieGet() === undefined ? <Navln /> : <Navdrop />}
+          {cookieGet() === undefined ? <Navln /> : <Navdrop un={uname}/>}
 
         </Navbar.Collapse>
       </Container>
