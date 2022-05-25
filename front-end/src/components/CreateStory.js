@@ -30,15 +30,8 @@ class CreateStory extends React.Component {
   }
   handleSubmit(event) {
     event.preventDefault()
-    // this.props.closen()
     let form_data = new FormData();
     if (this.state.images !== []) this.state.images.forEach(x => form_data.append('image', x));
-    // if (this.state.video.length > 0) form_data.append('video', this.state.video, this.state.video.name);
-    // if (this.state.audio.length > 0) form_data.append('audio', this.state.audio, this.state.audio.name);
-    // console.log('form_data content:')
-    // for (var pair of form_data.entries()) {
-    //   console.log(pair[0] + ', ' + pair[1]);
-    // }
     let url = 'http://'+window.server_url+'/post/create_story/';
     const toke = cookieGet()
     axios.post(url, form_data, {

@@ -37,8 +37,6 @@ class CreatePost extends React.Component {
     if (this.state.images !== []) this.state.images.forEach(x => form_data.append('image', x));
     if (this.state.video !==[]) this.state.video.forEach(x => form_data.append('video', x));
     if (this.state.audio !==[]) this.state.audio.forEach(x => form_data.append('audio', x));
-    // if (this.state.video.length > 0) form_data.append('video', this.state.video, this.state.video.name);
-    // if (this.state.audio.length > 0) form_data.append('audio', this.state.audio, this.state.audio.name);
 
     form_data.append('title', this.state.title);
     form_data.append('text', this.state.text);
